@@ -1,7 +1,23 @@
 import RPi.GPIO as GPIO
+from time import sleep
 
-def button_callback(channel):
-    print("pressed")
+def button_pressed():
+    global state
+    if state == 0:
+        #button not pressed
+        if GPIO.input(buttonPin) == GPIO.HIGH:
+            print("pressed")
+            state = 1
+        else:
+            state = 0
+    elif state == 1:
+        #button pressed
+        if GPIO.input(buttonPin) == GPIO.HIGH:
+            state = 1
+        else:
+            state = 0
+    else:
+        state = 0;
 
 buttonPin = 10
 
@@ -9,15 +25,11 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(buttonPin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
-#outputs pressed while button is pressed
-#while 1:
-#    if GPIO.input(buttonPin) == GPIO.HIGH:
-#        print("pressed")
+state = 0
 
-#outputs pressed every time a rising edge is detected during button press
-GPIO.add_event_detect(buttonPin, GPIO.RISING, callback = button_callback)
-
-message = input("Press enter to quit\n\n")
+while 1:
+    sleep(.050)
+    button_pressed()
 
 GPIO.cleanup()
 

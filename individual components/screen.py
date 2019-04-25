@@ -1,20 +1,14 @@
-#connections between tft and pi
-#tft pins --> pi pins
-#led- --> ground
-#led+ --> 3.3V
-#cs --> 26 (ss)
-#sca --> 23 (sck)
-#sda --> 19 (mosi)
-#a0 --> 11 (gpio; set command bit)
-#reset --> 13 (gpio; reset hardware bit)
 from time import sleep
-import spidev
+import spidev # as spi
 import RPi.GPIO as GPIO
 
-#values used for screen
+#values for commands used for screen
 SLPOUT = [0x11]
 COLMOD = [0x3A]
 DISPON = [0x29]
+CASET = [0x2A]
+RASET = [0x2B]
+RAMWR = [0x2C]
 
 bus = 0
 device = 1
@@ -58,9 +52,33 @@ def InitDisplay():
     WriteCommand(DISPON) #find value in datasheet
     print("done")
 
+def Write565(data, count)
+    for(;count > 0; count = count - 1):
+        spi.xfer2([data >> 8])
+        spi.xfer2([data & 0xFF])
+
+def SetAddrWindow(x0, y0, x1, y1)
+    WriteCommand(CASET) #find value in datasheet
+    #WriteWord(x0)
+    spi.xfer2([x0 >> 8, x0 & 0xFF])
+    #WriteWord(x1)
+    spi.xfer2([x1 >> 8, x1 & 0xFF])
+    WriteCommand(RASET) #find value in datasheet
+    #WriteWord(y0)
+    spi.xfer2([y0 >> 8, y0 & 0xFF])
+    #WriteWord(y1)
+    spi.xfer2([y1 >> 8, y1 & 0xFF])
+
+def DrawPixel(x, y, color)
+    SetAddrWindow(x, y, x, y)
+    WriteCommand(RAMWR) #find value in datasheet
+    Write565(color, 1)
+
 def main():
     #spi.xfer2()
     InitDisplay()
+    
+    DrawPixel()
 
     GPIO.cleanup()
 

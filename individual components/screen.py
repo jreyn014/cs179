@@ -52,12 +52,13 @@ def InitDisplay():
     WriteCommand(DISPON) #find value in datasheet
     print("done")
 
-def Write565(data, count)
-    for(;count > 0; count = count - 1):
+def Write565(data, count):
+    while(count > 0):
         spi.xfer2([data >> 8])
         spi.xfer2([data & 0xFF])
+        count = count - 1
 
-def SetAddrWindow(x0, y0, x1, y1)
+def SetAddrWindow(x0, y0, x1, y1):
     WriteCommand(CASET) #find value in datasheet
     #WriteWord(x0)
     spi.xfer2([x0 >> 8, x0 & 0xFF])
@@ -69,7 +70,7 @@ def SetAddrWindow(x0, y0, x1, y1)
     #WriteWord(y1)
     spi.xfer2([y1 >> 8, y1 & 0xFF])
 
-def DrawPixel(x, y, color)
+def DrawPixel(x, y, color):
     SetAddrWindow(x, y, x, y)
     WriteCommand(RAMWR) #find value in datasheet
     Write565(color, 1)
@@ -78,7 +79,9 @@ def main():
     #spi.xfer2()
     InitDisplay()
     
-    DrawPixel()
+    for i in range(200):
+        for j in range(200):
+            DrawPixel(i, j, 0xFFFF)
 
     GPIO.cleanup()
 

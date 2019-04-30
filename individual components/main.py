@@ -15,7 +15,7 @@ class Task:
 #end def Task
 
 # Task(SM, milliseconds)
-task_menu = Task(menu.Menu(),5)
+task_menu = Task(menu.Menu(),12)
 task_speaker = Task(speaker.Speaker(),1)
 
 tasks = [task_menu, task_speaker]
@@ -31,8 +31,8 @@ def main_tick(period_main):
         task.elapsed += period_main
         
         if task.elapsed >= task.period:
+            task.sm.tick()
             task.elapsed = 0
-            threading.Thread(target=task.sm.tick()).start()
 #end def main_tick
 
 def main():

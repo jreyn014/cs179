@@ -2,6 +2,16 @@
 
 import globals
 
-def tick(state):
-    globals.test += 1
-    return state
+class Menu():
+    def __init__(self):
+        self.state = 0
+        
+    def tick(self):
+        state = self.state
+        
+        if(globals.test < 25):
+            globals.test += 1
+            print("Menu: "+str(globals.test))
+        
+        self.state = state
+#end class Menu

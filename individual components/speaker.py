@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import globals
 
 #Software PWM available on all pins
@@ -39,7 +39,6 @@ def getFrequency(x):
 
 #Mock Music
 test = [
-"C#4","C#4","C#4","C#4",
 "C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0", 
 "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1", 
 "C2","C#2","D2","D#2","E2","F2","F#2","G2","G#2","A2","A#2","B2", 
@@ -49,65 +48,60 @@ test = [
 "C6","C#6","D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
 "C7","C#7","D7","D#7","E7","F7","F#7","G7","G#7","A7","A#7","B7", 
 "C8","C#8","D8","D#8","E8","F8","F#8","G8","G#8","A8","A#8","B8",
-"C#4","C#4","C#4","C#4",
 ]
 
-class Speaker():
-    def __init__(self):
-        self.state = 0
-        self.index = 0
-        
-    def tick(self):
-        state = self.state
-        index = self.index
-        pwm = GPIO.PWM(pwmPin, 0)
-        
-        #Transitions
-        if state == 0: #init
-            GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BOARD)
-            GPIO.setup(pwmPin, GPIO.OUT)
-            index = 0
-            globals.speaker_play = True
-            pwm.stop()
-            state = 1                   #GO: PWM_OFF
-        
-        elif state == 1: #PWM_OFF
-            if(globals.speaker_play):        #TO: PWM_ON
-                pwm.ChangeFrequency(0)
-                pwm.start(50)
-                index = 0
-                state = 2
-                globals.speaker_play = False
-            else:                       #TO: PWM_ON
-                state = 1   
-                
-        elif state == 2: #PWM_ON
-            if(index >= len(test)-1):     #TO: PWM_OFF
-                pwm.stop()
-                state = 1
-            else:                       #TO: PWM_ON
-                index += 1
-                state = 2
-        else:
-            state = 0
-        
-        #Actions
-        if state == 0:
-            pass
-            pwm.stop()
-        elif state == 1:        #PWM_OFF
-            pass
-            pwm.stop()
-        elif state == 2:        #PWM_ON
-            note = test[index]
-            freq = getFrequency(note)
-            print("    "+note+": "+str(freq))
-            pwm.ChangeFrequency(freq)
-        
-        self.state = state
-        self.index = index
-    #end def tick
-#end class Speaker
 
-GPIO.cleanup()
+state = 0
+index = 0
+        
+def tick():
+    global state
+    global index
+    
+    #Transitions
+    if state == 0: #init
+        #GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BOARD)
+        #GPIO.setup(pwmPin, GPIO.OUT)
+        index = 0
+        globals.speaker_play = True
+        #pwm = GPIO.PWM(pwmPin, 0)
+        #pwm.stop()
+        state = 1                   #GO: PWM_OFF
+    
+    elif state == 1: #PWM_OFF
+        if(globals.speaker_play):        #TO: PWM_ON
+            #pwm.ChangeFrequency(0)
+            #pwm.start(50)
+            index = 0
+            state = 2
+            globals.speaker_play = False
+        else:                       #TO: PWM_ON
+            state = 1   
+            
+    elif state == 2: #PWM_ON
+        if(index >= len(test)-1):     #TO: PWM_OFF
+            #pwm.stop()
+            state = 1
+        else:                       #TO: PWM_ON
+            index += 1
+            state = 2
+    else:
+        state = 0
+    
+    #Actions
+    if state == 0:
+        pass
+        #pwm.stop()
+    elif state == 1:        #PWM_OFF
+        pass
+        #pwm.stop()
+    elif state == 2:        #PWM_ON
+        note = test[index]
+        freq = getFrequency(note)
+        print("    "+note+": "+str(freq))
+        #pwm.ChangeFrequency(freq)
+    
+#end def tick
+
+#GPIO.cleanup()

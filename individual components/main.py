@@ -5,19 +5,22 @@ import time
 import threading
 
 import menu
-import speaker_test as speaker
+import speaker
+#import test
 
 class Task:    
-    def __init__(self, sm, period):
-        self.sm = sm                # State Machine object
+    def __init__(self, tick, period):
+        self.tick = tick                # State Machine object
         self.period = period        # in milliseconds
         self.elapsed = period
 #end def Task
 
 # Task(SM, milliseconds)
-task_menu = Task(menu.Menu(),12)
-task_speaker = Task(speaker.Speaker(),1)
+task_menu = Task(menu.tick,1200)
+task_speaker = Task(speaker.tick,100)
+#task_test = Task(test.tick,500)
 
+#tasks = [task_menu, task_speaker]
 tasks = [task_menu, task_speaker]
 
 def gcd(x, y):
@@ -31,7 +34,7 @@ def main_tick(period_main):
         task.elapsed += period_main
         
         if task.elapsed >= task.period:
-            task.sm.tick()
+            task.tick()
             task.elapsed = 0
 #end def main_tick
 

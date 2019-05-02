@@ -6,7 +6,7 @@ import threading
 
 import menu
 import speaker
-#import test
+import buttons
 
 class Task:    
     def __init__(self, tick, period):
@@ -16,12 +16,11 @@ class Task:
 #end def Task
 
 # Task(SM, milliseconds)
-task_menu = Task(menu.tick,1200)
-task_speaker = Task(speaker.tick,100)
-#task_test = Task(test.tick,500)
+task_buttons = Task(buttons.tick,100)
+task_menu = Task(menu.tick,100)
+task_speaker = Task(speaker.tick,10)
 
-#tasks = [task_menu, task_speaker]
-tasks = [task_menu, task_speaker]
+tasks = [task_buttons, task_menu, task_speaker ]
 
 def gcd(x, y):
     while y:

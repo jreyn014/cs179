@@ -1,5 +1,6 @@
 #import RPi.GPIO as GPIO
 import globals
+from enum import Enum
 
 #Software PWM available on all pins
 #Hardware PWM available on GPIO12, GPIO13, GPIO18, GPIO19
@@ -50,53 +51,53 @@ test = [
 "C8","C#8","D8","D#8","E8","F8","F#8","G8","G#8","A8","A#8","B8",
 ]
 
-
-state = 0
+States = Enum('States', 'init PWM_OFF PWM_ON')
+state = States.init
 index = 0
-        
+
 def tick():
     global state
     global index
     
     #Transitions
-    if state == 0: #init
+    if state == States.init:
         #GPIO.setwarnings(False)
         #GPIO.setmode(GPIO.BOARD)
         #GPIO.setup(pwmPin, GPIO.OUT)
         index = 0
-        globals.speaker_play = True
+        globals.speaker_play = False
         #pwm = GPIO.PWM(pwmPin, 0)
         #pwm.stop()
-        state = 1                   #GO: PWM_OFF
+        state = States.PWM_OFF
     
-    elif state == 1: #PWM_OFF
-        if(globals.speaker_play):        #TO: PWM_ON
+    elif state == States.PWM_OFF:
+        if(globals.speaker_play):
             #pwm.ChangeFrequency(0)
             #pwm.start(50)
             index = 0
-            state = 2
+            state = States.PWM_ON
             globals.speaker_play = False
-        else:                       #TO: PWM_ON
-            state = 1   
+        else:
+            state = States.PWM_OFF   
             
-    elif state == 2: #PWM_ON
-        if(index >= len(test)-1):     #TO: PWM_OFF
+    elif state == States.PWM_ON:
+        if(index >= len(test)-1):
             #pwm.stop()
-            state = 1
-        else:                       #TO: PWM_ON
+            state = States.PWM_OFF
+        else:
             index += 1
-            state = 2
+            state = States.PWM_ON
     else:
-        state = 0
+        state = States.init
     
     #Actions
-    if state == 0:
+    if state == States.init:
         pass
         #pwm.stop()
-    elif state == 1:        #PWM_OFF
+    elif state == States.PWM_OFF:
         pass
         #pwm.stop()
-    elif state == 2:        #PWM_ON
+    elif state == States.PWM_ON:
         note = test[index]
         freq = getFrequency(note)
         print("    "+note+": "+str(freq))

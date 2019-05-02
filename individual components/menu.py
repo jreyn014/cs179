@@ -1,34 +1,99 @@
 #State Machine for Main Menu selection screen options
-
 import globals
+from enum import Enum
 
-state = 0
-    
+A = 0; B = 1; up = 2; down = 3; left = 4; right = 5;
+States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P')
+state = States.init
+
 def tick():
     global state
-    
+    buttons = globals.buttons
     #Transitions
-    if state == 0:
-        state = 1
-    elif state == 1:
-        if globals.test < 9:
-            state = 1
-            globals.test += 1
+    if state == States.init:
+        print("--> 1P Game")
+        state = States.GAME_SELECT_1P
+        
+    elif state == States.GAME_SELECT_1P:
+        if buttons[A]:
+            print("Starting 1P Game...")
+            globals.speaker_play = True
+            state = States.GAME_1P
+        elif buttons[down]:
+            print("--> 2P Game")
+            state = States.GAME_SELECT_2P
         else:
-            state = 2
-    elif state == 2:
-        state = 2
+            state = States.GAME_SELECT_1P
+            
+    elif state == States.GAME_1P:
+        if buttons[B]:
+            print("--> 1P Game")         
+            state = States.GAME_SELECT_1P
+        else:
+            state = States.GAME_1P
+        
+    elif state ==  States.GAME_SELECT_2P:
+        if buttons[A]:
+            print("  --> Host Game")
+            state = States.GAME_SELECT_HOST
+        elif buttons[up]:
+            print("--> 1P Game")
+            state = States.GAME_SELECT_1P
+        else:
+            state = States.GAME_SELECT_2P
+            
+    elif state == States.GAME_SELECT_HOST:
+        if buttons[A]:
+            print("  --> Hosting Game...")
+            globals.speaker_play = True
+            state = States.GAME_2P
+        elif buttons[B]:
+            print("--> 2P Game")
+            state = States.GAME_SELECT_2P
+        elif buttons[down]:
+            print("  --> Connect to a Game")
+            state = States.GAME_SELECT_CONNECT
+        else:
+            state = States.GAME_SELECT_HOST
+            
+    elif state == States.GAME_SELECT_CONNECT:
+        if buttons[A]:
+            print("  --> Connecting to Game...")
+            globals.speaker_play = True
+            state = States.GAME_2P
+        elif buttons[B]:
+            print("--> 2P Game")
+            state = States.GAME_SELECT_2P
+        elif buttons[up]:
+            print("  --> Host Game")
+            state = States.GAME_SELECT_HOST
+        else:
+            state = States.GAME_SELECT_CONNECT
+            
+    elif state == States.GAME_2P:
+        if buttons[B]:
+            print("--> 2P Game")
+            state = States.GAME_SELECT_2P
+        else:
+            state = States.GAME_2P
+        
     else:
-        state = 0
+        state = States.init
     
     #Actions
-    if state == 0:
+    if state == States.init:
         pass
-    elif state == 1:
-        print("Menu: "+str(globals.test))
-    elif state == 2:
+    elif state == States.GAME_SELECT_1P:
         pass
-    else:
+    elif state == States.GAME_1P:
+        pass
+    elif state == States.GAME_SELECT_2P:
+        pass
+    elif state == States.GAME_SELECT_HOST:
+        pass
+    elif state == States.GAME_SELECT_CONNECT:
+        pass
+    elif state == States.GAME_2P:
         pass
         
 #end def tick

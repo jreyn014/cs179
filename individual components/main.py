@@ -10,7 +10,7 @@ import buttons
 
 class Task:    
     def __init__(self, tick, period):
-        self.tick = tick                # State Machine object
+        self.tick = tick            # State Machine object
         self.period = period        # in milliseconds
         self.elapsed = period
 #end def Task

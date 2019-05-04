@@ -1,79 +1,108 @@
+import globals
+from enum import Enum
 import random
+import copy
+
+A = 0; B = 1; up = 2; down = 3; left = 4; right = 5;
 
 Blocks = {
-'I' : [
-[0,0,0,0],
-[1,1,1,1],
-[0,0,0,0],
-[0,0,0,0]
-],
+    'I' : [
+    ['.','.','.','.'],
+    ['I','I','I','I'],
+    ['.','.','.','.'],
+    ['.','.','.','.']
+    ],
 
-'O' : [
-[0,0,0,0],
-[0,1,1,0],
-[0,1,1,0],
-[0,0,0,0]
-],
+    'O' : [
+    ['.','.','.','.'],
+    ['.','O','O','.'],
+    ['.','O','O','.'],
+    ['.','.','.','.']
+    ],
 
-'J' : [
-[0,0,0],
-[1,1,1],
-[0,0,1],
-],
+    'J' : [
+    ['.','.','.'],
+    ['J','J','J'],
+    ['.','.','J'],
+    ],
 
-'L' : [
-[0,0,0],
-[1,1,1],
-[1,0,0],
-],
+    'L' : [
+    ['.','.','.'],
+    ['L','L','L'],
+    ['L','.','.'],
+    ],
 
-'S' : [
-[0,0,0],
-[0,1,1],
-[1,1,0]
-],
+    'S' : [
+    ['.','.','.'],
+    ['.','S','S'],
+    ['S','S','.']
+    ],
 
-'Z' : [
-[0,0,0],
-[1,1,0],
-[0,1,1]
-],
+    'Z' : [
+    ['.','.','.'],
+    ['Z','Z','.'],
+    ['.','Z','Z']
+    ],
 
-'T' : [
-[0,0,0],
-[1,1,1],
-[0,1,0]
-]
+    'T' : [
+    ['.','.','.'],
+    ['T','T','T'],
+    ['.','T','.']
+    ]
 }
 
 class Block:
-    def __init__(self, b):
-        self.block = b
-        self.n = len(b[0])
+
+    def __init__(self):
+        self.block = Blocks[random.choice(list(Blocks.keys()))]
+        self.n = len(self.block[0])
+        self.index = [0,4] #Top left of n x n block
+    
+    def move_Left(self):
+        B = copy.deepcopy(self)
+        B.index[1] -= 1
+        return B
+    #end def move_Left
+    
+    def move_Right(self):
+        B = copy.deepcopy(self)
+        B.index[1] += 1
+        return B
+    #end def move_Right
+    
+    def move_Down(self):
+        B = copy.deepcopy(self)
+        B.index[0] += 1
+        return B
+    #end def move_Down
     
     def rotate_CW(self):
-        M = self.block
-        n = self.n
+        B = copy.deepcopy(self)
+        block = B.block
+        n = B.n
         for x in range(0, (int(n/2))):
             for y in range(x, n-x-1):
-                T =  M[n-1-y][x]
-                M[n-1-y][x] = M[n-1-x][n-1-y]
-                M[n-1-x][n-1-y] = M[y][n-1-x]
-                M[y][n-1-x] = M[x][y]
-                M[x][y] = T
-    #end def
+                T =  block[n-1-y][x]
+                block[n-1-y][x] = block[n-1-x][n-1-y]
+                block[n-1-x][n-1-y] = block[y][n-1-x]
+                block[y][n-1-x] = block[x][y]
+                block[x][y] = T
+        return B
+    #end def rotate_CW
     
     def rotate_ACW(self):
-        M = self.block
-        n = self.n
+        B = copy.deepcopy(self)
+        block = B.block
+        n = B.n
         for x in range(0, (int(n/2))):
             for y in range(x, n-x-1):
-                T = M[x][y]
-                M[x][y] = M[y][n-1-x]
-                M[y][n-1-x] = M[n-1-x][n-1-y]
-                M[n-1-x][n-1-y] = M[n-1-y][x]
-                M[n-1-y][x] = T
-    #end def
+                T = block[x][y]
+                block[x][y] = block[y][n-1-x]
+                block[y][n-1-x] = block[n-1-x][n-1-y]
+                block[n-1-x][n-1-y] = block[n-1-y][x]
+                block[n-1-y][x] = T
+        return B
+    #end def rotate_ACW
     
     def printM(self):
         M = self.block
@@ -83,136 +112,113 @@ class Block:
         print()
 #end class Block
 
-def game_SM(state):
+def isCollision(m,b):
+    (row,column) = b.index
+    n = b.n
+    for i in range(n):
+        for j in range(n):
+            if b.block[i][j] != '.':
+                if m.map[row+i][column+j] != '.':
+                    return True #collision detected
+    
+    return False #no collision
+#end def
+
+class Map:
+    def __init__(self):
+        self.map = [
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['>','.','.','.','.','.','.','.','.','.','.','<'],
+        ['^','^','^','^','^','^','^','^','^','^','^','^']]
+    #end def __init__
+    
+    def set(self,B):
+        (row,column) = B.index
+        n = B.n
+        new_map = copy.deepcopy(self)
+        for i in range(n):
+            for j in range(n):
+                if B.block[i][j] != '.':
+                    new_map.map[row+i][column+j] = B.block[i][j]
+        return new_map
+    #end def
+
+    def print_Map(self):
+        for row in self.map:
+            for column in row:
+                print(column,end=' ')
+            print()
+#end class Map
+        
+
+States = Enum('States', 'init GAME_OFF GAME_ON')
+state = States.init
+game_map = Map()
+active_block = Block()
+
+def tick():
+    global state
+    global game_map
+    global active_block
     
     #Transitions
-    if state == 0: #init
-        x = range(10)
-        y = range(20)
-        game_map = [x,y]
+    if state == States.init:
+        state = States.GAME_OFF
         
-        state = 1
-    elif state == 1: 
-        state = 1
-    #elif state == 2: 
-    
+    elif state == States.GAME_OFF:
+        if globals.game_play == True:
+            state = States.GAME_ON
+        else:
+            state == States.GAME_OFF
+        
+    elif state == States.GAME_ON:
+        if globals.game_play == True:
+            state = States.GAME_ON
+        else:
+            state = States.GAME_OFF
+        
     else:
-        state = 0
-    
-    #Actions
-    if state == 0:
-        x = range(10)
-        y = range(20)
-        game_map = [x,y]
-    elif state == 1:
-        x = range(10)
-    #elif state == 2:
+        state = States.init
         
-    return state
-
-game_state = 0
-#while True:
-#    time.sleep(0.01)
-#    game_state = game_SM(game_state)
-
-x = 10
-y = 20
-game_map = [ [0] * x ] * y
-
-print()
-for row in reversed(range(y)):
-    print(">", end = ' ')
-    for col in game_map[row]:
-        print(str(col), end=' ')
-    print("<")
-
-print(" ",end=' ')    
-for i in range(x):
-    print("^", end = ' ')
-print(" ")
-
-
-
-test = Block(Blocks['I'])
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-
-test = Block(Blocks['O'])
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-test.printM()
-test.rotate_ACW()
-
-test = Block(Blocks['J'])
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-
-test = Block(Blocks['L'])
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-
-test = Block(Blocks['S'])
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-
-test = Block(Blocks['Z'])
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-
-test = Block(Blocks['T'])
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
-test.printM()
-test.rotate_CW()
+    #Actions
+    if state == States.init:
+        pass
+    elif state == States.GAME_OFF:
+        pass
+    elif state == States.GAME_ON:
+        buttons = globals.buttons
+        test_block = active_block
+        if buttons[A]:
+            test_block = active_block.rotate_ACW()
+        elif buttons[B]:
+            test_block = active_block.rotate_CW()
+        if buttons[left] and not buttons[right]:
+            test_block = active_block.move_Left()
+        elif buttons[right] and not buttons[left]:
+            test_block = active_block.move_Right()
+        if buttons[down]:
+            test_block = active_block.move_Down()
+        if not isCollision(game_map,test_block):
+            active_block = test_block
+        new_map = game_map.set(active_block)
+        new_map.print_Map()
+#end def tick

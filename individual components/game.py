@@ -161,7 +161,27 @@ class Map:
                     new_map.map[row+i][column+j] = B.block[i][j]
         return new_map
     #end def
-
+    
+    def checkLines(self):
+        map = self.map
+        full_lines = []
+        for row in range(21):
+            full = True
+            for column in range(1,11):
+                if map[row][column] == '.':
+                    full = False
+                    break
+            if full:
+                full_lines.append(row)
+        if len(full_lines) > 0:     
+            for row in full_lines:
+                for column in range(1,11):
+                    map[row][column] = '='
+            return True
+        else:
+            return False
+    #end def
+    
     def print_Map(self):
         for row in self.map:
             for column in row:
@@ -174,11 +194,28 @@ States = Enum('States', 'init GAME_OFF GAME_ON')
 state = States.init
 game_map = Map()
 active_block = Block()
+next_block = Block()
+held_block = Block()
+lines = [0,0,0,0]
+#           A      B      up     down   left   right
+button_held = [False, False, False, False, False, False]
+autodown_count = 0
+speed = 1
+clear_lines = False
+clear_count = 0
 
 def tick():
     global state
     global game_map
     global active_block
+    global next_block
+    global held_block
+    global lines
+    global button_held
+    global autodown_count
+    global speed
+    global clear_lines
+    global clear_count
     
     #Transitions
     if state == States.init:
@@ -207,18 +244,60 @@ def tick():
     elif state == States.GAME_ON:
         buttons = globals.buttons
         test_block = active_block
-        if buttons[A]:
+        for button in range(6):
+            if not buttons[button]:                     #Unlatch buttons
+                button_held[button] = False
+                
+        if buttons[up] and not button_held[up]:         #Hold block
+            button_held[up] = True
+            temp = copy.deepcopy(held_block)
+            test_block.index = [0,4]
+            held_block = copy.deepcopy(test_block)
+            test_block = copy.deepcopy(temp)
+        
+        if buttons[A] and not button_held[A]:           #Rotate Anticlockwise
+            button_held[A] = True
             test_block = active_block.rotate_ACW()
-        elif buttons[B]:
+            
+        if buttons[B] and not button_held[B]:           #Rotate Clockwise
+            button_held[B] = True
             test_block = active_block.rotate_CW()
-        if buttons[left] and not buttons[right]:
+            
+        if buttons[left] and not button_held[left]:     #Move Left
+            button_held[left] = True
             test_block = active_block.move_Left()
-        elif buttons[right] and not buttons[left]:
+            
+        if buttons[right] and not button_held[right]:   #Move Right
+            button_held[right] = True
             test_block = active_block.move_Right()
-        if buttons[down]:
-            test_block = active_block.move_Down()
+        
         if not isCollision(game_map,test_block):
             active_block = test_block
+        
+        if ( buttons[down]  and not button_held[down] ) or autodown_count >= 20:    #Move Down
+            button_held[down] = True if buttons[down] else False
+            test_block = active_block.move_Down()
+            if not isCollision(game_map,test_block):
+                active_block = test_block
+            else:
+                game_map = game_map.set(active_block)
+                clear_lines = game_map.checkLines()
+                active_block = copy.deepcopy(next_block)
+                next_block = Block()
+            autodown_count = 0
+        else:
+            autodown_count += speed
+        
+        if clear_lines == True:
+            if clear_count >=10:
+                for row in range(21):
+                    if game_map.map[row][1] == '=':
+                        game_map.map.pop(row)
+                        game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])
+                clear_count = 0
+            else:
+                clear_count += speed
+            
         new_map = game_map.set(active_block)
         new_map.print_Map()
 #end def tick

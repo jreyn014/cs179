@@ -17,7 +17,8 @@ def tick():
     elif state == States.GAME_SELECT_1P:
         if buttons[A]:
             print("Starting 1P Game...")
-            globals.speaker_play = True
+            #globals.speaker_play = True
+            globals.game_play = True
             state = States.GAME_1P
         elif buttons[down]:
             print("--> 2P Game")
@@ -26,11 +27,12 @@ def tick():
             state = States.GAME_SELECT_1P
             
     elif state == States.GAME_1P:
-        if buttons[B]:
-            print("--> 1P Game")         
-            state = States.GAME_SELECT_1P
-        else:
+        if globals.game_play == True:           
             state = States.GAME_1P
+        else:
+            print("--> 1P Game")           
+            state = States.GAME_SELECT_1P
+            
         
     elif state ==  States.GAME_SELECT_2P:
         if buttons[A]:
@@ -45,7 +47,8 @@ def tick():
     elif state == States.GAME_SELECT_HOST:
         if buttons[A]:
             print("  --> Hosting Game...")
-            globals.speaker_play = True
+            #globals.speaker_play = True
+            globals.game_play = True
             state = States.GAME_2P
         elif buttons[B]:
             print("--> 2P Game")
@@ -59,7 +62,8 @@ def tick():
     elif state == States.GAME_SELECT_CONNECT:
         if buttons[A]:
             print("  --> Connecting to Game...")
-            globals.speaker_play = True
+            #globals.speaker_play = True
+            globals.game_play = True
             state = States.GAME_2P
         elif buttons[B]:
             print("--> 2P Game")
@@ -72,8 +76,10 @@ def tick():
             
     elif state == States.GAME_2P:
         if buttons[B]:
-            print("--> 2P Game")
-            state = States.GAME_SELECT_2P
+            pass
+            #globals.game_play = False
+            #print("--> 2P Game")
+            #state = States.GAME_SELECT_2P
         else:
             state = States.GAME_2P
         

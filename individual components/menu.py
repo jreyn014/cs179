@@ -27,13 +27,12 @@ def tick():
             state = States.GAME_SELECT_1P
             
     elif state == States.GAME_1P:
-        if buttons[B]:
-            pass
-            #globals.game_play = False  
-            #print("--> 1P Game")           
-            #state = States.GAME_SELECT_1P
-        else:
+        if globals.game_play == True:           
             state = States.GAME_1P
+        else:
+            print("--> 1P Game")           
+            state = States.GAME_SELECT_1P
+            
         
     elif state ==  States.GAME_SELECT_2P:
         if buttons[A]:

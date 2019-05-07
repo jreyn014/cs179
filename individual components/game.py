@@ -104,11 +104,13 @@ class Block:
         return B
     #end def rotate_ACW
     
-    def printM(self):
-        M = self.block
+    def print_Block(self):
+        B = self.block
         n = self.n
-        for i in range(0,n):
-            print(M[i])
+        for row in range(n):
+            for column in range(n):
+                print(B[row][column],end=' ')
+            print()
         print()
 #end class Block
 
@@ -177,9 +179,7 @@ class Map:
             for row in full_lines:
                 for column in range(1,11):
                     map[row][column] = '='
-            return True
-        else:
-            return False
+        return len(full_lines)
     #end def
     
     def print_Map(self):
@@ -197,8 +197,8 @@ active_block = Block()
 next_block = Block()
 held_block = Block()
 lines = [0,0,0,0]
-#           A      B      up     down   left   right
-button_held = [False, False, False, False, False, False]
+#               A      B      up     down   left   right
+button_latch = [False, False, False, False, False, False]
 autodown_count = 0
 speed = 1
 clear_lines = False
@@ -211,7 +211,7 @@ def tick():
     global next_block
     global held_block
     global lines
-    global button_held
+    global button_latch
     global autodown_count
     global speed
     global clear_lines
@@ -223,6 +223,17 @@ def tick():
         
     elif state == States.GAME_OFF:
         if globals.game_play == True:
+            game_map = Map()
+            active_block = Block()
+            next_block = Block()
+            held_block = Block()
+            lines = [0,0,0,0]
+            #               A      B      up     down   left   right
+            button_latch = [False, False, False, False, False, False]
+            autodown_count = 0
+            speed = 1
+            clear_lines = False
+            clear_count = 0
             state = States.GAME_ON
         else:
             state == States.GAME_OFF
@@ -231,6 +242,7 @@ def tick():
         if globals.game_play == True:
             state = States.GAME_ON
         else:
+            print("Game Over")
             state = States.GAME_OFF
         
     else:
@@ -245,37 +257,37 @@ def tick():
         buttons = globals.buttons
         test_block = active_block
         for button in range(6):
-            if not buttons[button]:                     #Unlatch buttons
-                button_held[button] = False
+            if not buttons[button]:                     #Unlatch inputs
+                button_latch[button] = False
                 
-        if buttons[up] and not button_held[up]:         #Hold block
-            button_held[up] = True
+        if buttons[up] and not button_latch[up]:         #Hold block
+            button_latch[up] = True
             temp = copy.deepcopy(held_block)
             test_block.index = [0,4]
             held_block = copy.deepcopy(test_block)
             test_block = copy.deepcopy(temp)
         
-        if buttons[A] and not button_held[A]:           #Rotate Anticlockwise
-            button_held[A] = True
+        if buttons[A] and not button_latch[A]:           #Rotate Anticlockwise
+            button_latch[A] = True
             test_block = active_block.rotate_ACW()
             
-        if buttons[B] and not button_held[B]:           #Rotate Clockwise
-            button_held[B] = True
+        if buttons[B] and not button_latch[B]:           #Rotate Clockwise
+            button_latch[B] = True
             test_block = active_block.rotate_CW()
             
-        if buttons[left] and not button_held[left]:     #Move Left
-            button_held[left] = True
+        if buttons[left] and not button_latch[left]:     #Move Left
+            button_latch[left] = True
             test_block = active_block.move_Left()
             
-        if buttons[right] and not button_held[right]:   #Move Right
-            button_held[right] = True
+        if buttons[right] and not button_latch[right]:   #Move Right
+            button_latch[right] = True
             test_block = active_block.move_Right()
         
         if not isCollision(game_map,test_block):
             active_block = test_block
         
-        if ( buttons[down]  and not button_held[down] ) or autodown_count >= 20:    #Move Down
-            button_held[down] = True if buttons[down] else False
+        if ( buttons[down]  and not button_latch[down] ) or autodown_count >= 20:    #Move Down
+            button_latch[down] = True if buttons[down] else False
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
                 active_block = test_block
@@ -284,20 +296,31 @@ def tick():
                 clear_lines = game_map.checkLines()
                 active_block = copy.deepcopy(next_block)
                 next_block = Block()
+                if isCollision(game_map,active_block):
+                    globals.game_play = False
             autodown_count = 0
         else:
-            autodown_count += speed
+            autodown_count += sum(lines)/10 + 1
         
-        if clear_lines == True:
+        if clear_lines > 0:
             if clear_count >=10:
                 for row in range(21):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
                         game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])
+                        lines[clear_lines-1] += 1
                 clear_count = 0
             else:
-                clear_count += speed
-            
-        new_map = game_map.set(active_block)
-        new_map.print_Map()
+                clear_count += sum(lines)/20 + 1
+        print("Held Block:")
+        globals.held_block = held_block
+        globals.held_block.print_Block()
+        globals.game_map = game_map.set(active_block)
+        globals.game_map.print_Map()
+        print("Next Block:")
+        globals.next_block = next_block
+        globals.next_block.print_Block()
+        for i in range(4):
+            print("Lines "+str(i+1)+": "+str(lines[i]))
+        print()
 #end def tick

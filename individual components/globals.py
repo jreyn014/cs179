@@ -7,6 +7,7 @@ buttons = [False, False, False, False, False, False]
 game_map = None
 game_play = False
 held_block = None
+lines = [0,0,0,0]
 next_block = None
 speaker_play = False
 

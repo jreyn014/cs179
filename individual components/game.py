@@ -53,8 +53,12 @@ Blocks = {
 
 class Block:
 
-    def __init__(self):
-        self.block = Blocks[random.choice(list(Blocks.keys()))]
+    def __init__(self,key = None):
+        if key:
+            self.key = key
+        else:
+            self.key = random.choice(list(Blocks.keys()))
+        self.block = Blocks[self.key]
         self.n = len(self.block[0])
         self.index = [0,4] #Top left of n x n block
     
@@ -195,7 +199,8 @@ state = States.init
 game_map = Map()
 active_block = Block()
 next_block = Block()
-held_block = Block()
+hold_block = Block()
+hold_latch = False
 lines = [0,0,0,0]
 #               A      B      up     down   left   right
 button_latch = [False, False, False, False, False, False]
@@ -209,7 +214,8 @@ def tick():
     global game_map
     global active_block
     global next_block
-    global held_block
+    global hold_block
+    global hold_latch
     global lines
     global button_latch
     global autodown_count
@@ -226,7 +232,7 @@ def tick():
             game_map = Map()
             active_block = Block()
             next_block = Block()
-            held_block = Block()
+            hold_block = Block()
             lines = [0,0,0,0]
             #               A      B      up     down   left   right
             button_latch = [False, False, False, False, False, False]
@@ -242,7 +248,6 @@ def tick():
         if globals.game_play == True:
             state = States.GAME_ON
         else:
-            print("Game Over")
             state = States.GAME_OFF
         
     else:
@@ -256,16 +261,21 @@ def tick():
     elif state == States.GAME_ON:
         buttons = globals.buttons
         test_block = active_block
+        
+        #Unlatch Inputs
         for button in range(6):
-            if not buttons[button]:                     #Unlatch inputs
+            if not buttons[button]:]
                 button_latch[button] = False
-                
-        if buttons[up] and not button_latch[up]:         #Hold block
+        
+        #Check Buttons
+        if buttons[up] and not button_latch[up] and not hold_latch:         #Hold block
             button_latch[up] = True
-            temp = copy.deepcopy(held_block)
+            hold_latch = True
+            temp = copy.deepcopy(hold_block)
             test_block.index = [0,4]
-            held_block = copy.deepcopy(test_block)
-            test_block = copy.deepcopy(temp)
+            hold_block = Block(test_block.key)
+            test_block = Block(temp.key)
+            autodown_count = 0
         
         if buttons[A] and not button_latch[A]:           #Rotate Anticlockwise
             button_latch[A] = True
@@ -286,6 +296,7 @@ def tick():
         if not isCollision(game_map,test_block):
             active_block = test_block
         
+        #Check downward movement
         if ( buttons[down]  and not button_latch[down] ) or autodown_count >= 20:    #Move Down
             button_latch[down] = True if buttons[down] else False
             test_block = active_block.move_Down()
@@ -294,33 +305,40 @@ def tick():
             else:
                 game_map = game_map.set(active_block)
                 clear_lines = game_map.checkLines()
-                active_block = copy.deepcopy(next_block)
+                active_block = Block(next_block.key)
                 next_block = Block()
+                hold_latch = False
                 if isCollision(game_map,active_block):
-                    globals.game_play = False
+                    globals.game_play = False   #GAME OVER
             autodown_count = 0
         else:
             autodown_count += sum(lines)/10 + 1
         
+        #Check lines
         if clear_lines > 0:
             if clear_count >=10:
                 for row in range(21):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
                         game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])
-                        lines[clear_lines-1] += 1
+                lines[clear_lines-1] = lines[clear_lines-1] + 1
                 clear_count = 0
+                clear_lines = 0
             else:
                 clear_count += sum(lines)/20 + 1
+        
+        #Mock printing
+        print("\n"*100)
         print("Held Block:")
-        globals.held_block = held_block
-        globals.held_block.print_Block()
+        globals.hold_block = hold_block
+        globals.hold_block.print_Block()
         globals.game_map = game_map.set(active_block)
         globals.game_map.print_Map()
         print("Next Block:")
         globals.next_block = next_block
         globals.next_block.print_Block()
         for i in range(4):
+            globals.lines[i] = lines[i]
             print("Lines "+str(i+1)+": "+str(lines[i]))
         print()
 #end def tick

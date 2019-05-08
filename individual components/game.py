@@ -3,8 +3,6 @@ from enum import Enum
 import random
 import copy
 
-A = 0; B = 1; up = 2; down = 3; left = 4; right = 5;
-
 Blocks = {
     'I' : [
     ['.','.','.','.'],
@@ -202,8 +200,14 @@ next_block = Block()
 hold_block = Block()
 hold_latch = False
 lines = [0,0,0,0]
-#               A      B      up     down   left   right
-button_latch = [False, False, False, False, False, False]
+button_latch = {
+"A"     : False, 
+"B"     : False, 
+"Up"    : False, 
+"Down"  : False, 
+"Left"  : False, 
+"Right" : False
+}
 autodown_count = 0
 speed = 1
 clear_lines = False
@@ -234,8 +238,8 @@ def tick():
             next_block = Block()
             hold_block = Block()
             lines = [0,0,0,0]
-            #               A      B      up     down   left   right
-            button_latch = [False, False, False, False, False, False]
+            for button in button_latch:
+                button_latch[button] = False
             autodown_count = 0
             speed = 1
             clear_lines = False
@@ -263,13 +267,13 @@ def tick():
         test_block = active_block
         
         #Unlatch Inputs
-        for button in range(6):
-            if not buttons[button]:]
+        for button in button_latch:
+            if not buttons[button]:
                 button_latch[button] = False
         
         #Check Buttons
-        if buttons[up] and not button_latch[up] and not hold_latch:         #Hold block
-            button_latch[up] = True
+        if buttons["Up"] and not button_latch["Up"] and not hold_latch:         #Hold block
+            button_latch["Up"] = True
             hold_latch = True
             temp = copy.deepcopy(hold_block)
             test_block.index = [0,4]
@@ -277,28 +281,28 @@ def tick():
             test_block = Block(temp.key)
             autodown_count = 0
         
-        if buttons[A] and not button_latch[A]:           #Rotate Anticlockwise
-            button_latch[A] = True
+        if buttons["A"] and not button_latch["A"]:           #Rotate Anticlockwise
+            button_latch["A"] = True
             test_block = active_block.rotate_ACW()
             
-        if buttons[B] and not button_latch[B]:           #Rotate Clockwise
-            button_latch[B] = True
+        if buttons["B"] and not button_latch["B"]:           #Rotate Clockwise
+            button_latch["B"] = True
             test_block = active_block.rotate_CW()
             
-        if buttons[left] and not button_latch[left]:     #Move Left
-            button_latch[left] = True
+        if buttons["Left"] and not button_latch["Left"]:     #Move Left
+            button_latch["Left"] = True
             test_block = active_block.move_Left()
             
-        if buttons[right] and not button_latch[right]:   #Move Right
-            button_latch[right] = True
+        if buttons["Right"] and not button_latch["Right"]:   #Move Right
+            button_latch["Right"] = True
             test_block = active_block.move_Right()
         
         if not isCollision(game_map,test_block):
             active_block = test_block
         
         #Check downward movement
-        if ( buttons[down]  and not button_latch[down] ) or autodown_count >= 20:    #Move Down
-            button_latch[down] = True if buttons[down] else False
+        if ( buttons["Down"]  and not button_latch["Down"] ) or autodown_count >= 20:    #Move Down
+            button_latch["Down"] = True if buttons["Down"] else False
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
                 active_block = test_block

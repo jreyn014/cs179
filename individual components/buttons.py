@@ -2,8 +2,6 @@
 import globals
 from enum import Enum
 import keyboard #Test import
-#Buttons:
-#A, B, up, down, left, right
 
 #Replace with GPIO pins
 A = "z"
@@ -13,7 +11,14 @@ down = "s"
 left = "a"
 right = "d"
 
-buttons = [A,B,up,down,left,right]
+buttons = {
+A     : "A",
+B     : "B",
+up    : "Up",
+down  : "Down",
+left  : "Left",
+right : "Right"
+}
 
 States = Enum('States', 'init POLL')
 state = States.init
@@ -32,7 +37,8 @@ def tick():
     global state
     #Transitions
     if state == States.init:
-        globals.buttons = [False, False, False, False, False, False]
+        for button in globals.buttons:
+            globals.buttons[button] = False
         state = States.POLL
     elif state == States.POLL:
         state = States.POLL
@@ -43,7 +49,6 @@ def tick():
     if state == States.init:
         pass
     elif state == States.POLL:
-        for i in range(len(buttons)):
-            #Change getKey to GPIO.HIGH
-            globals.buttons[i] = True if getKey(buttons[i]) else False
+        for button in buttons:
+            globals.buttons[buttons[button]] = True if getKey(button) else False
         

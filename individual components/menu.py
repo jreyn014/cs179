@@ -2,7 +2,6 @@
 import globals
 from enum import Enum
 
-A = 0; B = 1; up = 2; down = 3; left = 4; right = 5;
 States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P')
 state = States.init
 
@@ -15,12 +14,12 @@ def tick():
         state = States.GAME_SELECT_1P
         
     elif state == States.GAME_SELECT_1P:
-        if buttons[A]:
+        if buttons["A"]:
             print("Starting 1P Game...")
             #globals.speaker_play = True
             globals.game_play = True
             state = States.GAME_1P
-        elif buttons[down]:
+        elif buttons["Down"]:
             print("--> 2P Game")
             state = States.GAME_SELECT_2P
         else:
@@ -43,47 +42,47 @@ def tick():
             
         
     elif state ==  States.GAME_SELECT_2P:
-        if buttons[A]:
+        if buttons["A"]:
             print("  --> Host Game")
             state = States.GAME_SELECT_HOST
-        elif buttons[up]:
+        elif buttons["Up"]:
             print("--> 1P Game")
             state = States.GAME_SELECT_1P
         else:
             state = States.GAME_SELECT_2P
             
     elif state == States.GAME_SELECT_HOST:
-        if buttons[A]:
+        if buttons["A"]:
             print("  --> Hosting Game...")
             #globals.speaker_play = True
             globals.game_play = True
             state = States.GAME_2P
-        elif buttons[B]:
+        elif buttons["B"]:
             print("--> 2P Game")
             state = States.GAME_SELECT_2P
-        elif buttons[down]:
+        elif buttons["Down"]:
             print("  --> Connect to a Game")
             state = States.GAME_SELECT_CONNECT
         else:
             state = States.GAME_SELECT_HOST
             
     elif state == States.GAME_SELECT_CONNECT:
-        if buttons[A]:
+        if buttons["A"]:
             print("  --> Connecting to Game...")
             #globals.speaker_play = True
             globals.game_play = True
             state = States.GAME_2P
-        elif buttons[B]:
+        elif buttons["B"]:
             print("--> 2P Game")
             state = States.GAME_SELECT_2P
-        elif buttons[up]:
+        elif buttons["Up"]:
             print("  --> Host Game")
             state = States.GAME_SELECT_HOST
         else:
             state = States.GAME_SELECT_CONNECT
             
     elif state == States.GAME_2P:
-        if buttons[B]:
+        if buttons["B"]:
             pass
             #globals.game_play = False
             #print("--> 2P Game")

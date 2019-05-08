@@ -1,8 +1,14 @@
 #Store globals here
 #Sort alphabetically
 
-#Up, Down, Left, Right, B, A
-buttons = [False, False, False, False, False, False]
+buttons = {
+"A"     : False,
+"B"     : False, 
+"Up"    : False,
+"Down"  : False, 
+"Left"  : False, 
+"Right" : False
+}
 
 game_map = None
 game_play = False

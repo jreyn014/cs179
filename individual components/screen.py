@@ -9,8 +9,12 @@
 #a0 --> 11 (gpio; set command bit)
 #reset --> 13 (gpio; reset hardware bit)
 from time import sleep
+import time
 import spidev
 import RPi.GPIO as GPIO
+import copy
+
+import globals
 
 #values for commands used for screen
 SLPOUT = 0x11
@@ -35,30 +39,6 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(commandPin, GPIO.OUT)
 GPIO.setup(resetPin, GPIO.OUT)
-
-initialMap = [
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['>','.','.','.','.','.','.','.','.','.','.','<'],
-['^','^','^','^','^','^','^','^','^','^','^','^']]
 
 def HardwareReset():
     #clear bit; GPIO;
@@ -134,44 +114,23 @@ def ColorLUT(inputChar):
     elif inputChar == '<':
         return 0x0000
 
-def main():
-    InitDisplay()
-    color = 0x0000
-    #fill screen using DrawPixel
-#    for i in range(128):
-#        for j in range(160):
-#            DrawPixel(i, j, color)
-#            color += 0x0010
-#        color += 0x0100
-#    sleep(4)
-    for i in range(128):
-        for j in range(160):
-            DrawPixel(i, j, color)
-    sleep(4)
-    #make rectangles on screen using FillRect
-#    color = 0x041F
-#    FillRect(1, 1, 100, 100, color)
-#    color = 0x4014
-#    FillRect(1, 1, 100, 50, color)
-#    color = 0xF81F
-#    FillRect(1, 1, 50, 100, color)
-#    sleep(4)
-    print(initialMap[0][0])
-    for i in range(12):
-        for j in range(21):
-            FillRect(7 * i, 7 * j, 7 * i + 7, 7 * j + 7, ColorLUT(initialMap[j][i]))
-    mapCopy = initialMap
-    mapCopy[1][1] = 'T'
-    mapCopy[2][2] = 'S'
-    mapCopy[3][3] = 'I'
-    mapCopy[4][4] = 'O'
-    mapCopy[5][5] = 'J'
-    mapCopy[6][6] = 'L'
-    mapCopy[7][7] = 'Z'
-    for i in range(12):
-        for j in range(21):
-            FillRect(7 * i, 7 * j, 7 * i + 7, 7 * j + 7, ColorLUT(mapCopy[j][i]))
-    
+def SetupGameScreen():
+    FillRect(0, 0, 128, 160, 0xFFFF)
 
-if __name__ == '__main__':
-    main()
+def tick():
+    if globals.game_map != None:
+        if globals.game_map_old == None:
+            for i in range(12):
+                for j in range(21):
+                    FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+        else:
+            for i in range(12):
+                for j in range(21):
+                    if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
+                        FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+        globals.game_map_old = copy.deepcopy(globals.game_map)
+#        for i in range(12):
+#            for j in range(21):
+#                FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+
+

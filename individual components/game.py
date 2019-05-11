@@ -109,11 +109,11 @@ class Block:
     def print_Block(self):
         B = self.block
         n = self.n
-        for row in range(n):
-            for column in range(n):
-                print(B[row][column],end=' ')
-            print()
-        print()
+#        for row in range(n):
+#            for column in range(n):
+#                print(B[row][column],end=' ')
+#            print()
+#        print()
 #end class Block
 
 def isCollision(m,b):
@@ -185,10 +185,11 @@ class Map:
     #end def
     
     def print_Map(self):
-        for row in self.map:
-            for column in row:
-                print(column,end=' ')
-            print()
+        nothing = 0
+#        for row in self.map:
+#            for column in row:
+#                print(column,end=' ')
+#            print()
 #end class Map
         
 
@@ -332,17 +333,17 @@ def tick():
                 clear_count += sum(lines)/20 + 1
         
         #Mock printing
-        print("\n"*100)
-        print("Held Block:")
+#        print("\n"*100)
+#        print("Held Block:")
         globals.hold_block = hold_block
         globals.hold_block.print_Block()
         globals.game_map = game_map.set(active_block)
         globals.game_map.print_Map()
-        print("Next Block:")
+#        print("Next Block:")
         globals.next_block = next_block
         globals.next_block.print_Block()
         for i in range(4):
             globals.lines[i] = lines[i]
-            print("Lines "+str(i+1)+": "+str(lines[i]))
-        print()
+#            print("Lines "+str(i+1)+": "+str(lines[i]))
+#        print()
 #end def tick

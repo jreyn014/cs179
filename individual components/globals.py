@@ -11,6 +11,7 @@ buttons = {
 }
 
 game_map = None
+game_map_old = None
 game_play = False
 held_block = None
 lines = [0,0,0,0]

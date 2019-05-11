@@ -113,6 +113,8 @@ def ColorLUT(inputChar):
         return 0x0000
     elif inputChar == '<':
         return 0x0000
+    elif inputChar == '=':
+        return 0x0000
 
 def SetupGameScreen():
     FillRect(0, 0, 128, 160, 0xFFFF)

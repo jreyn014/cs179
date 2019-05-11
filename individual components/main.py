@@ -52,7 +52,9 @@ def main():
     screen.SetupGameScreen()
     
     while True:
-        screen.tick()
+        screen.MainGame()
+        screen.NextBlock()
+        screen.HeldBlock()
         threading.Thread(target=main_tick,args=[period_main]).start()
         time.sleep(period_main/1000)
     

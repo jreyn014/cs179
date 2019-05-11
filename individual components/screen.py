@@ -115,15 +115,17 @@ def ColorLUT(inputChar):
         return 0x0000
     elif inputChar == '=':
         return 0x0000
+    elif inputChar == '^':
+        return 0x0000
 
 def SetupGameScreen():
     FillRect(0, 0, 128, 160, 0xFFFF)
 
-def tick():
+def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
             for i in range(12):
-                for j in range(21):
+                for j in range(22):
                     FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         else:
             for i in range(12):
@@ -131,8 +133,33 @@ def tick():
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
                         FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         globals.game_map_old = copy.deepcopy(globals.game_map)
-#        for i in range(12):
-#            for j in range(21):
-#                FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
 
+def NextBlock():
+    if globals.next_block != None:
+        offsetX = 92
+        offsetY = 4
+        if globals.next_block_old != None:
+            for i in range(3):
+                for j in range(3):
+                    if globals.next_block.block[j][i] != globals.next_block_old.block[j][i]:
+                        FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
+        else:
+            for i in range(3):
+                for j in range(3):
+                        FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
+        globals.next_block_old = copy.deepcopy(globals.next_block)
 
+def HeldBlock():
+    if globals.hold_block != None:
+        offsetX = 92
+        offsetY = 32
+        if globals.hold_block_old != None:
+            for i in range(3):
+                for j in range(3):
+                    if globals.hold_block.block[j][i] != globals.hold_block_old.block[j][i]:
+                        FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
+        else:
+            for i in range(3):
+                for j in range(3):
+                    FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
+        globals.hold_block_old = copy.deepcopy(globals.hold_block)

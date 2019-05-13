@@ -21,6 +21,7 @@ class Task:
 task_buttons = Task(buttons.tick,50)
 task_menu = Task(menu.tick,100)
 task_speaker = Task(speaker.tick,10)
+globals.speaker_period = 10
 task_game = Task(game.tick,50)
 #task_screen = Task(screen.tick, 500)
 

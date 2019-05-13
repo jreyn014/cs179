@@ -1,7 +1,7 @@
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import globals
 from enum import Enum
-
+import time
 #Software PWM available on all pins
 #Hardware PWM available on GPIO12, GPIO13, GPIO18, GPIO19
 pwmPin = 32 #GPIO12, PWM0
@@ -36,7 +36,7 @@ notes = {
 }
 
 def getFrequency(x):    
-    return (2**((notes[x] - 49) / 12) * 440)
+    return (2**((float)(notes[x] - 49) / 12) * 440)
 
 #Mock Music
 test = [
@@ -51,58 +51,110 @@ test = [
 "C8","C#8","D8","D#8","E8","F8","F#8","G8","G#8","A8","A#8","B8",
 ]
 
+katyusha_tempo = 150
+katyusha = [
+("B3",6), ("C#4",2), ("D4",6), ("B3",2),
+("D4",1), (0,1), ("D4",2), ("C#4",2), ("B3",2), ("C#4",4), ("F#3",4),
+("C#4",6), ("D4",2), ("E4",6), ("C#4",2),
+("E4",1), (0,1), ("E4",2), ("D4",2), ("C#4",2), ("B3",8),
+
+("F#4",4), ("B4",4), ("A4",4), ("B4",2), ("A4",2),
+("G4",2), ("G4",2), ("F#4",2), ("E4",2), ("F#4",4), ("B3",4),
+(0,2), ("G4",4), ("E4",2), ("F#4",6), ("D4",2),
+("C#4",2), ("F#3",2), ("D4",2), ("C#4",2), ("B3",8),
+
+("F#5",4), ("B5",4), ("A5",4), ("B5",2), ("A5",2),
+("G5",1), (0,1), ("G5",2), ("F#5",2), ("E5",2), ("F#5",4), ("B4",4),
+(0,2), ("G5",4), ("E5",2), ("F#5",6), ("D5",2),
+("C#5",2), ("F#4",2), ("D5",2), ("C#5",2), ("B4",8),
+
+("B4",6), ("C#5",2), ("D5",6), ("B4",2),
+("D5",1), (0,1), ("D5",2), ("C#5",2), ("B4",2), ("C#5",4), ("F#4",4),
+("C#5",6), ("D5",2), ("E5",6), ("C#5",2),
+("E5",3), ("E5",1), ("D5",2), ("C#5",2), ("B4",8),
+
+("F#5",4), ("B5",4), ("A5",4), ("B5",2), ("A5",2),
+("G5",3), ("G5",1), ("F#5",1), (0,1), ("E5",2), ("F#5",4), ("B4",4),
+(0,2), ("G5",4), ("E5",2), ("F#5",6), ("D5",2),
+("E5",2), ("E5",2), ("D5",2), ("C#5",2), ("B4",8),
+
+("F#4",4), ("B4",4), ("A4",4), ("B4",2), ("A4",2),
+("G4",3), ("G4",1), ("F#4",1), (0,1), ("E4",2), ("F#4",4), ("B3",4),
+(0,2), ("G4",4), ("E4",2), ("F#4",6), ("D4",2),
+("E4",2), ("E4",2), ("D4",2), ("C#4",2), ("B3",8),
+]
+
 States = Enum('States', 'init PWM_OFF PWM_ON')
 state = States.init
 index = 0
+song = None
+tempo = 0
+duration = 0
+timer = 0
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(pwmPin, GPIO.OUT)
+pwm = GPIO.PWM(pwmPin, 0)
+pwm.stop()
 
 def tick():
     global state
+    global song
     global index
+    global tempo
+    global duration
+    global timer
+    global pwm
     
     #Transitions
-    if state == States.init:
-        #GPIO.setwarnings(False)
-        #GPIO.setmode(GPIO.BOARD)
-        #GPIO.setup(pwmPin, GPIO.OUT)
-        index = 0
-        globals.speaker_play = False
-        #pwm = GPIO.PWM(pwmPin, 0)
-        #pwm.stop()
+    if state == States.init:           
+        pwm.stop()
         state = States.PWM_OFF
     
     elif state == States.PWM_OFF:
-        if(globals.speaker_play):
-            #pwm.ChangeFrequency(0)
-            #pwm.start(50)
-            index = 0
+        if globals.game_play == True:
+            pwm.ChangeFrequency(0.01)
+            pwm.start(50)
+            song = katyusha
+            index = -1
+            tempo = 60000 / (4 * katyusha_tempo)
+            timer = 0
+            duration = 0
             state = States.PWM_ON
-            globals.speaker_play = False
         else:
             state = States.PWM_OFF   
             
     elif state == States.PWM_ON:
-        if(index >= len(test)-1):
-            #pwm.stop()
-            state = States.PWM_OFF
-        else:
-            index += 1
+        if globals.game_play == True:
+            if timer > duration:
+                index += 1
+                if index >= len(song):
+                    index = 0
+                    print("Song Loop")
+                note = song[index][0]
+                duration = song[index][1] * tempo
+                if note == 0:
+                    freq = 0.01
+                else:
+                    freq = getFrequency(note)
+                print("    "+str(note)+": "+str(freq))
+                pwm.ChangeFrequency(freq)
+                timer = 0
+            timer += globals.speaker_period 
             state = States.PWM_ON
+        else:
+            pwm.stop()
+            state = States.PWM_OFF
     else:
         state = States.init
     
     #Actions
     if state == States.init:
         pass
-        #pwm.stop()
     elif state == States.PWM_OFF:
         pass
-        #pwm.stop()
+        pwm.stop()
     elif state == States.PWM_ON:
-        note = test[index]
-        freq = getFrequency(note)
-        print("    "+note+": "+str(freq))
-        #pwm.ChangeFrequency(freq)
-    
+        pass
 #end def tick
-
-#GPIO.cleanup()

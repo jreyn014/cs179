@@ -20,5 +20,6 @@ lines = [0,0,0,0]
 next_block = None
 next_block_old = None
 speaker_play = False
+speaker_period = 0
 
 test = 0

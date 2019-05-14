@@ -149,12 +149,8 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
         return 0x0000
 
 def SetupGameScreen():
-<<<<<<< HEAD
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
     DrawBricks()
-=======
-    FillRect(0, 0, 127, 159, ~0xFFFF)#0x31A6)
->>>>>>> 2a7902fcdcc18836fe664a034e38fd6a2f364807
 
 def DrawBricks():
     Fill_Color = 0x9492
@@ -196,16 +192,9 @@ def DrawSquare(x0,y0,x1,y1,color):
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
-<<<<<<< HEAD
             for i in range(1,11):
                 for j in range(21):
                     DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
-=======
-#            FillRect(8, 13, 77, 159, 0xFFFF)
-            for i in range(1,11):
-                for j in range(21):
-                    DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
-                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
             offsetX = 92
             LetterSize = 6
             for i in range(5):
@@ -219,17 +208,11 @@ def MainGame():
                     DrawPixel(i + offsetX + LetterSize, j + 80, ColorLUT(screen_characters.O[j][i]))
                     DrawPixel(i + offsetX + 2 * LetterSize, j + 80, ColorLUT(screen_characters.L[j][i]))
                     DrawPixel(i + offsetX + 3 * LetterSize, j + 80, ColorLUT(screen_characters.D[j][i]))
->>>>>>> 2a7902fcdcc18836fe664a034e38fd6a2f364807
         else:
             for i in range(1,11):
                 for j in range(21):
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-<<<<<<< HEAD
                         DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
-=======
-                        DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
-                        #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
->>>>>>> 2a7902fcdcc18836fe664a034e38fd6a2f364807
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
 def NextBlock():

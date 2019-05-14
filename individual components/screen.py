@@ -119,7 +119,20 @@ def ColorLUT(inputChar):
         return 0x0000
 
 def SetupGameScreen():
-    FillRect(0, 0, 128, 160, 0xFFFF)
+    FillRect(0, 0, 127, 159, 0xFFFF)
+
+def DrawBricks():
+    Fill_Color = 0xDEBD
+    Outline_Color = 0x2965
+    FillRect(0,0,84,159,Fill_Color)
+    for i in range(80):
+	FillRect(0,i*2,84,i*2,Outline_Color)
+    	if (i % 2) == 0:
+	    for j in range(1,22):
+		DrawPixel(j*4-1,i+1,Outline_Color)
+	else:
+	    for k in range(1,22):
+		DrawPixel(j*4-3,i+1,Outline_Color)
 
 def MainGame():
     if globals.game_map != None:

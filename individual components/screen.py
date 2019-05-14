@@ -130,7 +130,7 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
     elif inputChar == 'S':
         return 0x0B6B
     elif inputChar == 'I':
-        return 0xFFFF
+        return 0x2104
     elif inputChar == 'O':
         return 0x0012
     elif inputChar == 'J':

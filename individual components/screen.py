@@ -83,14 +83,14 @@ def SetAddrWindow(x0, y0, x1, y1):
 def DrawPixel(x, y, color):
     SetAddrWindow(x, y, x, y)
     WriteCommand(RAMWR)
-    Write565(color, 1)
+    Write565(~color, 1)
 
 def FillRect(x0, y0, x1, y1, color):
     width = x1 - x0 + 1
     height = y1 - y0 + 1
     SetAddrWindow(x0, y0, x1, y1)
     WriteCommand(RAMWR)
-    Write565(color, width * height)
+    Write565(~color, width * height)
 
 def ColorLUT(inputChar):
     if inputChar == '.':

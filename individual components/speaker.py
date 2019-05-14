@@ -91,12 +91,13 @@ song = None
 tempo = 0
 duration = 0
 timer = 0
+freq = 0
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pwmPin, GPIO.OUT)
-pwm = GPIO.PWM(pwmPin, 0)
-pwm.stop()
+pwm = GPIO.PWM(pwmPin, 50)
+#pwm.stop()
 
 def tick():
     global state
@@ -106,25 +107,28 @@ def tick():
     global duration
     global timer
     global pwm
-    
+    global freq
+
     #Transitions
-    if state == States.init:           
+    if state == States.init:
         pwm.stop()
-        state = States.PWM_OFF
-    
+	state = States.PWM_OFF
+
     elif state == States.PWM_OFF:
         if globals.game_play == True:
-            pwm.ChangeFrequency(0.01)
             pwm.start(50)
+	    pwm.ChangeFrequency(440) #change freq
+           # globals.pwm.start(50)
             song = katyusha
             index = -1
-            tempo = 60000 / (4 * katyusha_tempo)
+            tempo = 60000 / (1.5 * katyusha_tempo)
             timer = 0
             duration = 0
+	    print 'PWM_OFF'
             state = States.PWM_ON
         else:
-            state = States.PWM_OFF   
-            
+            state = States.PWM_OFF
+
     elif state == States.PWM_ON:
         if globals.game_play == True:
             if timer > duration:
@@ -135,20 +139,23 @@ def tick():
                 note = song[index][0]
                 duration = song[index][1] * tempo
                 if note == 0:
-                    freq = 0.01
+                    #freq = .01
+		    pwm.ChangeDutyCycle(0)
                 else:
                     freq = getFrequency(note)
-                print("    "+str(note)+": "+str(freq))
+		    pwm.ChangeDutyCycle(50)
+               # print("    "+str(note)+": "+str(freq))
                 pwm.ChangeFrequency(freq)
                 timer = 0
-            timer += globals.speaker_period 
+	   # print 'PWM_ON'
+            timer += globals.speaker_period
             state = States.PWM_ON
         else:
             pwm.stop()
             state = States.PWM_OFF
     else:
         state = States.init
-    
+
     #Actions
     if state == States.init:
         pass
@@ -158,3 +165,7 @@ def tick():
     elif state == States.PWM_ON:
         pass
 #end def tick
+
+#while 1:
+#    tick()
+#    time.sleep(.5)

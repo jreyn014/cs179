@@ -15,6 +15,7 @@ import RPi.GPIO as GPIO
 import copy
 
 import globals
+import screen_characters
 
 #values for commands used for screen
 SLPOUT = 0x11
@@ -100,7 +101,7 @@ def ColorLUT(inputChar):
     elif inputChar == 'S':
         return 0x0B6B
     elif inputChar == 'I':
-        return 0x2104
+        return 0xFFFF
     elif inputChar == 'O':
         return 0x0012
     elif inputChar == 'J':
@@ -120,7 +121,7 @@ def ColorLUT(inputChar):
 
 
 def SetupGameScreen():
-    FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
+    FillRect(0, 0, 127, 159, ~0xFFFF)#0x31A6)
 
 def DrawBricks():
     Fill_Color = 0xDEBD
@@ -156,16 +157,28 @@ def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
 #            FillRect(8, 13, 77, 159, 0xFFFF)
-#            FillRect()
             for i in range(1,11):
                 for j in range(21):
-                    DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
+                    DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
                     #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+            offsetX = 92
+            LetterSize = 6
+            for i in range(5):
+                for j in range(5):
+                    DrawPixel(i + offsetX, j + 35, ColorLUT(screen_characters.N[j][i]))
+                    DrawPixel(i + offsetX + LetterSize, j + 35, ColorLUT(screen_characters.E[j][i]))
+                    DrawPixel(i + offsetX + 2 * LetterSize, j + 35, ColorLUT(screen_characters.X[j][i]))
+                    DrawPixel(i + offsetX + 3 * LetterSize, j + 35, ColorLUT(screen_characters.T[j][i]))
+
+                    DrawPixel(i + offsetX, j + 80, ColorLUT(screen_characters.H[j][i]))
+                    DrawPixel(i + offsetX + LetterSize, j + 80, ColorLUT(screen_characters.O[j][i]))
+                    DrawPixel(i + offsetX + 2 * LetterSize, j + 80, ColorLUT(screen_characters.L[j][i]))
+                    DrawPixel(i + offsetX + 3 * LetterSize, j + 80, ColorLUT(screen_characters.D[j][i]))
         else:
             for i in range(1,11):
                 for j in range(21):
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-                        DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
+                        DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
                         #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
@@ -191,7 +204,7 @@ def HeldBlock():
     if globals.hold_block != None:
         hold_block = globals.hold_block.print_Block()
         offsetX = 92
-        offsetY = 40
+        offsetY = 50
         if globals.hold_block_old != None:
 #            hold_block_old = globals.hold_block_old.print_Block()
             for i in range(4):

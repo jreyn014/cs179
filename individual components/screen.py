@@ -153,24 +153,24 @@ def DrawBricks():
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)
     for i in range(80):
-	FillRect(0,i*2,84,i*2,Outline_Color)
-    	if (i % 2) == 0:
-	    for j in range(1,22):
-		DrawPixel(j*4-1,i+1,Outline_Color)
-	else:
-	    for k in range(1,22):
-		DrawPixel(j*4-3,i+1,Outline_Color)
+        FillRect(0,i*2,84,i*2,Outline_Color)
+        if (i % 2) == 0:
+            for j in range(1,22):
+                DrawPixel(j*4-1,i+1,Outline_Color)
+        else:
+            for k in range(1,22):
+                DrawPixel(j*4-3,i+1,Outline_Color)
     FillRect(8,13,77,159,0x738E)
 
 def DrawSquare(x0,y0,x1,y1,color):
     if x1 < x0:
-	t = x1
-	x1 = x0
-	x0 = t
+        t = x1
+        x1 = x0
+        x0 = t
     if y1 < y0:
-	t = y1
-	y1 = y0
-	y0 = t
+        t = y1
+        y1 = y0
+        y0 = t
     FillRect(x0,y0,x1,y0,ColorLUT2(color))
     FillRect(x1,y0+1,x1,y1,ColorLUT2(color))
     FillRect(x1-1,y1,x0,y1,ColorLUT2(color))
@@ -183,13 +183,13 @@ def MainGame():
         if globals.game_map_old == None:
             for i in range(1,11):
                 for j in range(21):
-		    DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i]))
+                    DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
                     #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         else:
             for i in range(1,11):
                 for j in range(21):
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-			DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i]))
+                        DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
                         #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
@@ -201,12 +201,12 @@ def NextBlock():
             for i in range(3):
                 for j in range(3):
                     if globals.next_block.block[j][i] != globals.next_block_old.block[j][i]:
-			DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.next_block.block[j][i]))
+                        DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.next_block.block[j][i])
                         #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         else:
             for i in range(3):
                 for j in range(3):
-		    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.next_block.block[j][i]))
+                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.next_block.block[j][i])
                     #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         globals.next_block_old = copy.deepcopy(globals.next_block)
 
@@ -218,11 +218,11 @@ def HeldBlock():
             for i in range(3):
                 for j in range(3):
                     if globals.hold_block.block[j][i] != globals.hold_block_old.block[j][i]:
-			DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.hold_block.block[j][i]))
+                        DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.hold_block.block[j][i])
                         #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         else:
             for i in range(3):
                 for j in range(3):
-		    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.hold_block.block[j][i]))
+                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY,globals.hold_block.block[j][i])
                     #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         globals.hold_block_old = copy.deepcopy(globals.hold_block)

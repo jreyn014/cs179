@@ -107,13 +107,13 @@ class Block:
     #end def rotate_ACW
     
     def print_Block(self):
-        B = self.block
-        n = self.n
-#        for row in range(n):
-#            for column in range(n):
-#                print(B[row][column],end=' ')
-#            print()
-#        print()
+        B = copy.deepcopy(self)
+        n = B.n
+        if n == 3:
+            for row in B.block:
+                row.append('.')
+            B.block.append(['.','.','.','.'])
+        return B.block
 #end class Block
 
 def isCollision(m,b):

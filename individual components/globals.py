@@ -12,7 +12,7 @@ buttons = {
 
 game_map = None
 game_map_old = None
-game_play = True #FIX ME!!!
+game_play = False
 held_block = None
 hold_block = None
 hold_block_old = None

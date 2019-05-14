@@ -68,6 +68,7 @@ def WriteWord(word):
     spi.xfer2([word >> 8, word & 0x00FF])
 
 def Write565(data, count):
+    data = ~data #COMMENT ME TO INVERT
     while(count > 0):
         spi.xfer2([data >> 8, data & 0x00FF])
         count = count - 1
@@ -83,18 +84,20 @@ def SetAddrWindow(x0, y0, x1, y1):
 def DrawPixel(x, y, color):
     SetAddrWindow(x, y, x, y)
     WriteCommand(RAMWR)
-    Write565(~color, 1)
+    Write565(color, 1)
 
 def FillRect(x0, y0, x1, y1, color):
     width = x1 - x0 + 1
     height = y1 - y0 + 1
     SetAddrWindow(x0, y0, x1, y1)
     WriteCommand(RAMWR)
-    Write565(~color, width * height)
+    Write565(color, width * height)
 
-def ColorLUT(inputChar):
+FieldColor = 0xC618
+
+def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
     if inputChar == '.':
-        return 0x738E
+        return FieldColor 
     elif inputChar == 'T':
         return 0xFFE1
     elif inputChar == 'S':
@@ -118,9 +121,9 @@ def ColorLUT(inputChar):
     elif inputChar == '^':
         return 0x0000
 
-def ColorLUT2(inputChar):
+def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
     if inputChar == '.':
-        return 0x738E
+        return FieldColor 
     elif inputChar == 'T':
         return 0x94C0
     elif inputChar == 'S':
@@ -146,52 +149,56 @@ def ColorLUT2(inputChar):
 
 def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
+    DrawBricks()
 
 def DrawBricks():
-    Fill_Color = 0xDEBD
+    Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)
     for i in range(80):
-        FillRect(0,i*2,84,i*2,Outline_Color)
-        if (i % 2) == 0:
+        t = i*2
+        FillRect(0,t+1,84,t+1,Outline_Color)
+        if (i % 2) == 1:
             for j in range(1,22):
-                DrawPixel(j*4-1,i+1,Outline_Color)
+                DrawPixel(j*4-1,t,Outline_Color)
         else:
             for k in range(1,22):
-                DrawPixel(j*4-3,i+1,Outline_Color)
-    FillRect(8,13,77,159,0x738E)
+                DrawPixel(k*4-3,t,Outline_Color)
+    FillRect(8,0,77,146,FieldColor)
 
 def DrawSquare(x0,y0,x1,y1,color):
-    if x1 < x0:
-        t = x1
-        x1 = x0
-        x0 = t
-    if y1 < y0:
-        t = y1
-        y1 = y0
-        y0 = t
-    FillRect(x0,y0,x1,y0,ColorLUT2(color))
-    FillRect(x1,y0+1,x1,y1,ColorLUT2(color))
-    FillRect(x1-1,y1,x0,y1,ColorLUT2(color))
-    FillRect(x0,y1-1,x0,y0+1,ColorLUT2(color))
-    FillRect(x0+1,y0+1,x1-1,y1-1,ColorLUT(color))
-
+    if color == '.':
+        FillRect(x0,y0,x1,y1,ColorLUT(color))
+    else: 
+        if x1 < x0:
+            t = x1
+            x1 = x0
+            x0 = t
+        if y1 < y0:
+            t = y1
+            y1 = y0
+            y0 = t
+        FillRect(x0,y0,x1,y0,ColorLUT2(color))
+        FillRect(x0,y1,x1,y1,ColorLUT2(color))
+        y1 = y1 - 1
+        y0 = y0 + 1
+        FillRect(x0,y0,x0,y1,ColorLUT2(color))
+        FillRect(x1,y0,x1,y1,ColorLUT2(color))
+        x0 = x0 + 1
+        x1 = x1 - 1
+        FillRect(x0,y0,x1,y1,ColorLUT(color))
 
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
-#            FillRect(8, 13, 77, 159, 0xFFFF)
-#            FillRect()
             for i in range(1,11):
                 for j in range(21):
-                    DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
-                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+                    DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
         else:
             for i in range(1,11):
                 for j in range(21):
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-                        DrawSquare(7*i+1,7*j+13,7*i+7,7*j+19,globals.game_map.map[j][i])
-                        #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+                        DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
 def NextBlock():
@@ -204,12 +211,10 @@ def NextBlock():
                 for j in range(4):
                     if next_block[j][i] != globals.next_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
-                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
-                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         globals.next_block_old = copy.deepcopy(next_block)
 
 def HeldBlock():
@@ -223,10 +228,9 @@ def HeldBlock():
                 for j in range(4):
                     if hold_block[j][i] != globals.hold_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
-                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
-                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         globals.hold_block_old = copy.deepcopy(hold_block)
+

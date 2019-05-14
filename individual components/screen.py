@@ -160,6 +160,7 @@ def DrawBricks():
 	else:
 	    for k in range(1,22):
 		DrawPixel(j*4-3,i+1,Outline_Color)
+    FillRect(8,13,77,159,0x738E)
 
 def DrawSquare(x0,y0,x1,y1,color):
     if x1 < x0:

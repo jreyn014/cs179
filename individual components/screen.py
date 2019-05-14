@@ -96,6 +96,32 @@ def ColorLUT(inputChar):
     if inputChar == '.':
         return 0x738E
     elif inputChar == 'T':
+        return 0xFFE1
+    elif inputChar == 'S':
+        return 0x27FA
+    elif inputChar == 'I':
+        return 0xFFFF
+    elif inputChar == 'O':
+        return 0x201F
+    elif inputChar == 'J':
+        return 0x27E0
+    elif inputChar == 'L':
+        return 0xF81F
+    elif inputChar == 'Z':
+        return 0xF800
+    elif inputChar == '>':
+        return 0x0000
+    elif inputChar == '<':
+        return 0x0000
+    elif inputChar == '=':
+        return 0x0000
+    elif inputChar == '^':
+        return 0x0000
+
+def ColorLUT2(inputChar):
+    if inputChar == '.':
+        return 0x738E
+    elif inputChar == 'T':
         return 0x94C0
     elif inputChar == 'S':
         return 0x0B6B
@@ -117,7 +143,6 @@ def ColorLUT(inputChar):
         return 0x0000
     elif inputChar == '^':
         return 0x0000
-
 
 def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
@@ -145,10 +170,10 @@ def DrawSquare(x0,y0,x1,y1,color):
         t = y1
         y1 = y0
         y0 = t
-    FillRect(x0,y0,x1,y0,ColorLUT(color))
-    FillRect(x1,y0+1,x1,y1,ColorLUT(color))
-    FillRect(x1-1,y1,x0,y1,ColorLUT(color))
-    FillRect(x0,y1-1,x0,y0+1,ColorLUT(color))
+    FillRect(x0,y0,x1,y0,ColorLUT2(color))
+    FillRect(x1,y0+1,x1,y1,ColorLUT2(color))
+    FillRect(x1-1,y1,x0,y1,ColorLUT2(color))
+    FillRect(x0,y1-1,x0,y0+1,ColorLUT2(color))
     FillRect(x0+1,y0+1,x1-1,y1-1,ColorLUT(color))
 
 

@@ -97,32 +97,6 @@ def ColorLUT(inputChar):
     if inputChar == '.':
         return 0x738E
     elif inputChar == 'T':
-        return 0xFFE1
-    elif inputChar == 'S':
-        return 0x27FA
-    elif inputChar == 'I':
-        return 0xFFFF
-    elif inputChar == 'O':
-        return 0x201F
-    elif inputChar == 'J':
-        return 0x27E0
-    elif inputChar == 'L':
-        return 0xF81F
-    elif inputChar == 'Z':
-        return 0xF800
-    elif inputChar == '>':
-        return 0x0000
-    elif inputChar == '<':
-        return 0x0000
-    elif inputChar == '=':
-        return 0x0000
-    elif inputChar == '^':
-        return 0x0000
-
-def ColorLUT2(inputChar):
-    if inputChar == '.':
-        return 0x738E
-    elif inputChar == 'T':
         return 0x94C0
     elif inputChar == 'S':
         return 0x0B6B
@@ -146,7 +120,11 @@ def ColorLUT2(inputChar):
         return 0x0000
 
 def SetupGameScreen():
-    FillRect(0, 0, 127, 159, ~0xFFFF)#0x31A6)
+    FillRect(0, 0, 127, 159, ~0xFFFF)
+#    for i in range(10):
+#        for j in range(5):
+#            for k in range(5):
+#                DrawPixel(j + 10, k + i * 10 + 10, ColorLUT(screen_characters.numbers[i][k][j]))
 
 def DrawBricks():
     Fill_Color = 0xDEBD
@@ -171,10 +149,10 @@ def DrawSquare(x0,y0,x1,y1,color):
         t = y1
         y1 = y0
         y0 = t
-    FillRect(x0,y0,x1,y0,ColorLUT2(color))
-    FillRect(x1,y0+1,x1,y1,ColorLUT2(color))
-    FillRect(x1-1,y1,x0,y1,ColorLUT2(color))
-    FillRect(x0,y1-1,x0,y0+1,ColorLUT2(color))
+    FillRect(x0,y0,x1,y0,ColorLUT(color))
+    FillRect(x1,y0+1,x1,y1,ColorLUT(color))
+    FillRect(x1-1,y1,x0,y1,ColorLUT(color))
+    FillRect(x0,y1-1,x0,y0+1,ColorLUT(color))
     FillRect(x0+1,y0+1,x1-1,y1-1,ColorLUT(color))
 
 
@@ -199,6 +177,27 @@ def MainGame():
                     DrawPixel(i + offsetX + LetterSize, j + 80, ColorLUT(screen_characters.O[j][i]))
                     DrawPixel(i + offsetX + 2 * LetterSize, j + 80, ColorLUT(screen_characters.L[j][i]))
                     DrawPixel(i + offsetX + 3 * LetterSize, j + 80, ColorLUT(screen_characters.D[j][i]))
+
+                    DrawPixel(i + offsetX, j + 140, ColorLUT(screen_characters.L[j][i]))
+                    DrawPixel(i + offsetX + LetterSize, j + 140, ColorLUT(screen_characters.I[j][i]))
+                    DrawPixel(i + offsetX + 2 * LetterSize, j + 140, ColorLUT(screen_characters.N[j][i]))
+                    DrawPixel(i + offsetX + 3 * LetterSize, j + 140, ColorLUT(screen_characters.E[j][i]))
+
+                    DrawPixel(i + offsetX, j + 100, ColorLUT(screen_characters.numbers[1][j][i]))
+                    DrawPixel(i + offsetX, j + 110, ColorLUT(screen_characters.numbers[2][j][i]))
+                    DrawPixel(i + offsetX, j + 120, ColorLUT(screen_characters.numbers[3][j][i]))
+                    DrawPixel(i + offsetX, j + 130, ColorLUT(screen_characters.numbers[4][j][i]))
+
+                    DrawPixel(i + offsetX + 15, j + 100, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 15, j + 110, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 15, j + 120, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 15, j + 130, ColorLUT(screen_characters.numbers[0][j][i]))
+
+                    DrawPixel(i + offsetX + 22, j + 100, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 22, j + 110, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 22, j + 120, ColorLUT(screen_characters.numbers[0][j][i]))
+                    DrawPixel(i + offsetX + 22, j + 130, ColorLUT(screen_characters.numbers[0][j][i]))
+            FillRect(10 + offsetX, 100, 10 + offsetX, 135, 0xFFFF)
         else:
             for i in range(1,11):
                 for j in range(21):
@@ -243,3 +242,25 @@ def HeldBlock():
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
                     #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         globals.hold_block_old = copy.deepcopy(hold_block)
+
+def UpdateLines():
+    offsetX = 92
+    offsetY = 100
+    lines = globals.lines
+    lines_old = globals.lines_old
+    if lines != lines_old:
+        for i in range(5):
+            for j in range(5):
+                if lines[0] != lines_old[0]:
+                    DrawPixel(i + offsetX + 15, j + offsetY, ColorLUT(screen_characters.numbers[int(lines[0] / 10)][j][i]))
+                    DrawPixel(i + offsetX + 22, j + offsetY, ColorLUT(screen_characters.numbers[lines[0] % 10][j][i]))
+                if lines[1] != lines_old[1]:
+                    DrawPixel(i + offsetX + 15, j + offsetY + 10, ColorLUT(screen_characters.numbers[int(lines[1] / 10)][j][i]))
+                    DrawPixel(i + offsetX + 22, j + offsetY + 10, ColorLUT(screen_characters.numbers[lines[1] % 10][j][i]))
+                if lines[2] != lines_old[2]:
+                    DrawPixel(i + offsetX + 15, j + offsetY + 20, ColorLUT(screen_characters.numbers[int(lines[2] / 10)][j][i]))
+                    DrawPixel(i + offsetX + 22, j + offsetY + 20, ColorLUT(screen_characters.numbers[lines[2] % 10][j][i]))
+                if lines[3] != lines_old[3]:
+                    DrawPixel(i + offsetX + 15, j + offsetY + 30, ColorLUT(screen_characters.numbers[int(lines[3] / 10)][j][i]))
+                    DrawPixel(i + offsetX + 22, j + offsetY + 30, ColorLUT(screen_characters.numbers[lines[3] % 10][j][i]))
+        lines_old = copy.deepcopy(lines)

@@ -2,7 +2,7 @@
 import screen
 import globals
 from enum import Enum
-import speaker
+import screen
 
 States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P GAME_OVER')
 state = States.init

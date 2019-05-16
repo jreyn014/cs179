@@ -39,8 +39,7 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            #print("--> 1P Game")    
-            screen.Menu()            
+            #print("--> 1P Game")            
             state = States.GAME_OVER
             
         

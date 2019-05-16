@@ -235,10 +235,6 @@ def tick():
         
     elif state == States.GAME_OFF:
         if globals.game_play == True:
-            screen.MainGame()
-            screen.NextBlock()
-            screen.HeldBlock()
-            screen.UpdateLines()
             game_map = Map()
             active_block = Block()
             next_block = Block()
@@ -351,10 +347,5 @@ def tick():
         globals.next_block.print_Block()
         for i in range(4):
             globals.lines[i] = lines[i]
-        
-        screen.MainGame()
-        screen.NextBlock()
-        screen.HeldBlock()
-        screen.UpdateLines()
             
 #end def tick

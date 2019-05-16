@@ -52,6 +52,10 @@ def main():
     screen.Menu()
     
     while True:
+        screen.MainGame()
+        screen.NextBlock()
+        screen.HeldBlock()
+        screen.UpdateLines()
         threading.Thread(target=main_tick,args=[period_main]).start()
         time.sleep(period_main/1000)
     

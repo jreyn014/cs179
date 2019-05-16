@@ -226,10 +226,11 @@ def MoveMenuArrowDown():
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
-            DrawBricks()
+            FillRect(0, 0, 128, 160, 0x0000)
             for i in range(1,11):
                 for j in range(21):
                     DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
+                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
             offsetX = 92
             LetterSize = 6
             for i in range(5):
@@ -302,7 +303,8 @@ def HeldBlock():
         else:
             for i in range(4):
                 for j in range(4):
-                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])        globals.hold_block_old = copy.deepcopy(hold_block)
+                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
+        globals.hold_block_old = copy.deepcopy(hold_block)
 
 def UpdateLines():
     offsetX = 92

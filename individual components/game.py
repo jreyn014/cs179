@@ -342,8 +342,4 @@ def tick():
         for i in range(4):
             globals.lines[i] = lines[i]
             
-        screen.MainGame()
-        screen.NextBlock()
-        screen.HeldBlock()
-        screen.UpdateLines()
 #end def tick

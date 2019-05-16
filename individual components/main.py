@@ -48,9 +48,6 @@ def main():
     for task in tasks:
         period_main = gcd(period_main, task.period)
     
-    screen.SetupGameScreen()
-    screen.Menu()
-    
     while True:
         screen.MainGame()
         screen.NextBlock()

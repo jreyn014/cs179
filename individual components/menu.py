@@ -12,6 +12,8 @@ def tick():
     #Transitions
     if state == States.init:
         #print("--> 1P Game")
+        screen.SetupGameScreen()
+        screen.Menu()
         state = States.GAME_SELECT_1P
         
     elif state == States.GAME_SELECT_1P:
@@ -39,7 +41,7 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            #print("--> 1P Game")            
+            #print("--> 1P Game")              
             state = States.GAME_OVER
             
         
@@ -95,6 +97,8 @@ def tick():
     
     elif state == States.GAME_OVER:
         if buttons["B"]:
+            screen.SetupGameScreen()
+            screen.Menu()
             state = States.GAME_SELECT_1P
         else:
             state = States.GAME_OVER

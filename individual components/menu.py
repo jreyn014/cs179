@@ -1,9 +1,9 @@
 #State Machine for Main Menu selection screen options
-import screen
 import globals
+import screen
 from enum import Enum
 
-States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P')
+States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P GAME_OVER')
 state = States.init
 
 def tick():
@@ -11,12 +11,13 @@ def tick():
     buttons = globals.buttons
     #Transitions
     if state == States.init:
-        print("--> 1P Game")
+        #print("--> 1P Game")
+        screen.Menu()
         state = States.GAME_SELECT_1P
         
     elif state == States.GAME_SELECT_1P:
         if buttons["A"]:
-            print("Starting 1P Game...")
+            #print("Starting 1P Game...")
             #globals.speaker_play = True
             globals.game_play = True
             state = States.GAME_1P
@@ -31,7 +32,7 @@ def tick():
         if globals.game_play == True:           
             state = States.GAME_1P
         else:
-            print("Game Over")
+            #print("Game Over")
             total = globals.lines[0]*1 + globals.lines[1]*3 + globals.lines[2]*5 + globals.lines[3]*8
             print("Score:")
             print("1-lines: "+str(globals.lines[0])+" *1 =\t"+str(globals.lines[0]*1))
@@ -39,13 +40,14 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            print("--> 1P Game")           
-            state = States.GAME_SELECT_1P
+            #print("--> 1P Game")    
+            screen.Menu()            
+            state = States.GAME_OVER
             
         
     elif state ==  States.GAME_SELECT_2P:
         if buttons["A"]:
-            print("  --> Host Game")
+            #print("  --> Host Game")
             state = States.GAME_SELECT_HOST
         elif buttons["Up"]:
             screen.MoveMenuArrowUp()
@@ -56,15 +58,15 @@ def tick():
             
     elif state == States.GAME_SELECT_HOST:
         if buttons["A"]:
-            print("  --> Hosting Game...")
+            #print("  --> Hosting Game...")
             #globals.speaker_play = True
             globals.game_play = True
             state = States.GAME_2P
         elif buttons["B"]:
-            print("--> 2P Game")
+            #print("--> 2P Game")
             state = States.GAME_SELECT_2P
         elif buttons["Down"]:
-            print("  --> Connect to a Game")
+            #print("  --> Connect to a Game")
             state = States.GAME_SELECT_CONNECT
         else:
             state = States.GAME_SELECT_HOST
@@ -76,10 +78,10 @@ def tick():
             globals.game_play = True
             state = States.GAME_2P
         elif buttons["B"]:
-            print("--> 2P Game")
+            #print("--> 2P Game")
             state = States.GAME_SELECT_2P
         elif buttons["Up"]:
-            print("  --> Host Game")
+            #print("  --> Host Game")
             state = States.GAME_SELECT_HOST
         else:
             state = States.GAME_SELECT_CONNECT
@@ -92,7 +94,13 @@ def tick():
             #state = States.GAME_SELECT_2P
         else:
             state = States.GAME_2P
-        
+    
+    elif state = States.GAME_OVER:
+        if buttons["A"]:
+            screen.Menu()  
+            state = States.GAME_SELECT_1P
+        else:
+            state = States.GAME_OVER
     else:
         state = States.init
     
@@ -110,6 +118,8 @@ def tick():
     elif state == States.GAME_SELECT_CONNECT:
         pass
     elif state == States.GAME_2P:
+        pass
+    elif state == States.GAME_OVER:
         pass
         
 #end def tick

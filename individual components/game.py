@@ -2,6 +2,7 @@ import globals
 from enum import Enum
 import random
 import copy
+import screen
 
 Blocks = {
     'I' : [
@@ -245,6 +246,7 @@ def tick():
             speed = 1
             clear_lines = False
             clear_count = 0
+            screen.SetupGameScreen()
             state = States.GAME_ON
         else:
             state == States.GAME_OFF
@@ -332,18 +334,17 @@ def tick():
             else:
                 clear_count += sum(lines)/20 + 1
         
-        #Mock printing
-#        print("\n"*100)
-#        print("Held Block:")
         globals.hold_block = hold_block
         globals.hold_block.print_Block()
         globals.game_map = game_map.set(active_block)
         globals.game_map.print_Map()
-#        print("Next Block:")
         globals.next_block = next_block
         globals.next_block.print_Block()
         for i in range(4):
             globals.lines[i] = lines[i]
-#            print("Lines "+str(i+1)+": "+str(lines[i]))
-#        print()
+            
+        screen.MainGame()
+        screen.NextBlock()
+        screen.HeldBlock()
+        screen.UpdateLines()
 #end def tick

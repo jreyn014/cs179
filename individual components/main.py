@@ -19,14 +19,12 @@ class Task:
 
 # Task(SM, milliseconds)
 task_buttons = Task(buttons.tick,50)
-task_menu = Task(menu.tick,100)
-task_speaker = Task(speaker.tick,10)
-globals.speaker_period = 10
+task_menu = Task(menu.tick,50)
+globals.speaker_period = 50
+task_speaker = Task(speaker.tick,globals.speaker_period)
 task_game = Task(game.tick,50)
-#task_screen = Task(screen.tick, 500)
 
 tasks = [ task_buttons, task_menu, task_speaker, task_game ]
-#tasks = [ task_buttons, task_menu, task_speaker, task_game, task_screen ]
 
 def gcd(x, y):
     while y:
@@ -50,21 +48,25 @@ def main():
     for task in tasks:
         period_main = gcd(period_main, task.period)
 
-    while True:
-        if globals.flag == 1:
-            screen.SetupGameScreen()
-            screen.Menu()
-            globals.flag = 0
+#    while True:
+#        if globals.flag == 1:
+#            screen.SetupGameScreen()
+#            screen.Menu()
+#            globals.flag = 0
+#    
+#        while True:
+#            screen.MainGame()
+#            screen.NextBlock()
+#            screen.HeldBlock()
+#            screen.UpdateLines()
+#            threading.Thread(target=main_tick,args=[period_main]).start()
+#            time.sleep(period_main/1000)
+#            if globals.game_play == False:
+#                break
     
-        while True:
-            screen.MainGame()
-            screen.NextBlock()
-            screen.HeldBlock()
-            screen.UpdateLines()
-            threading.Thread(target=main_tick,args=[period_main]).start()
-            time.sleep(period_main/1000)
-            if globals.game_play == False:
-                break
+    while True:
+        threading.Thread(target=main_tick,args=[period_main]).start()
+        time.sleep(period_main/1000)
     
     return 0
 main()

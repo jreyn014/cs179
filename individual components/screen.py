@@ -93,15 +93,43 @@ def FillRect(x0, y0, x1, y1, color):
     WriteCommand(RAMWR)
     Write565(~color, width * height)
 
-def ColorLUT(inputChar):
+FieldColor = 0xC618
+
+def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
     if inputChar == '.':
-        return 0x738E
+        return FieldColor 
+    elif inputChar == 'T':
+        return 0xFFE1
+    elif inputChar == 'S':
+        return 0x27FA
+    elif inputChar == 'I':
+        return 0xFFFF
+    elif inputChar == 'O':
+        return 0x201F
+    elif inputChar == 'J':
+        return 0x27E0
+    elif inputChar == 'L':
+        return 0xF81F
+    elif inputChar == 'Z':
+        return 0xF800
+    elif inputChar == '>':
+        return 0x0000
+    elif inputChar == '<':
+        return 0x0000
+    elif inputChar == '=':
+        return 0x0000
+    elif inputChar == '^':
+        return 0x0000
+
+def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
+    if inputChar == '.':
+        return FieldColor 
     elif inputChar == 'T':
         return 0x94C0
     elif inputChar == 'S':
         return 0x0B6B
     elif inputChar == 'I':
-        return 0xFFFF
+        return 0x2104
     elif inputChar == 'O':
         return 0x0012
     elif inputChar == 'J':
@@ -120,36 +148,45 @@ def ColorLUT(inputChar):
         return 0x0000
 
 def SetupGameScreen():
-    FillRect(0, 0, 127, 159, ~0xFFFF)
+    FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
+    DrawBricks()
 
 def DrawBricks():
-    Fill_Color = 0xDEBD
+    Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)
     for i in range(80):
-        FillRect(0,i*2,84,i*2,Outline_Color)
-        if (i % 2) == 0:
+        t = i*2
+        FillRect(0,t+1,84,t+1,Outline_Color)
+        if (i % 2) == 1:
             for j in range(1,22):
-                DrawPixel(j*4-1,i+1,Outline_Color)
+                DrawPixel(j*4-1,t,Outline_Color)
         else:
             for k in range(1,22):
-                DrawPixel(j*4-3,i+1,Outline_Color)
-    FillRect(8,13,77,159,0x738E)
+                DrawPixel(k*4-3,t,Outline_Color)
+    FillRect(8,0,77,146,FieldColor)
 
 def DrawSquare(x0,y0,x1,y1,color):
-    if x1 < x0:
-        t = x1
-        x1 = x0
-        x0 = t
-    if y1 < y0:
-        t = y1
-        y1 = y0
-        y0 = t
-    FillRect(x0,y0,x1,y0,ColorLUT(color))
-    FillRect(x1,y0+1,x1,y1,ColorLUT(color))
-    FillRect(x1-1,y1,x0,y1,ColorLUT(color))
-    FillRect(x0,y1-1,x0,y0+1,ColorLUT(color))
-    FillRect(x0+1,y0+1,x1-1,y1-1,ColorLUT(color))
+    if color == '.':
+        FillRect(x0,y0,x1,y1,ColorLUT(color))
+    else: 
+        if x1 < x0:
+            t = x1
+            x1 = x0
+            x0 = t
+        if y1 < y0:
+            t = y1
+            y1 = y0
+            y0 = t
+        FillRect(x0,y0,x1,y0,ColorLUT2(color))
+        FillRect(x0,y1,x1,y1,ColorLUT2(color))
+        y1 = y1 - 1
+        y0 = y0 + 1
+        FillRect(x0,y0,x0,y1,ColorLUT2(color))
+        FillRect(x1,y0,x1,y1,ColorLUT2(color))
+        x0 = x0 + 1
+        x1 = x1 - 1
+        FillRect(x0,y0,x1,y1,ColorLUT(color))
 
 def Menu():
     if globals.game_map == None:

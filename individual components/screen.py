@@ -69,7 +69,7 @@ def WriteWord(word):
     spi.xfer2([word >> 8, word & 0x00FF])
 
 def Write565(data, count):
-    color = ~color #comment me to invert
+    data = ~data #comment me to invert
     while(count > 0):
         spi.xfer2([data >> 8, data & 0x00FF])
         count = count - 1

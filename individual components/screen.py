@@ -149,7 +149,6 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
 
 def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
-    DrawBricks()
 
 def DrawBricks():
     Fill_Color = 0x9492
@@ -227,11 +226,10 @@ def MoveMenuArrowDown():
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
-            FillRect(0, 0, 128, 160, 0x0000)
+            DrawBricks()
             for i in range(1,11):
                 for j in range(21):
                     DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
-                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
             offsetX = 92
             LetterSize = 6
             for i in range(5):
@@ -284,12 +282,10 @@ def NextBlock():
                 for j in range(4):
                     if next_block[j][i] != globals.next_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
-                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
-                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         globals.next_block_old = copy.deepcopy(next_block)
 
 def HeldBlock():
@@ -303,13 +299,10 @@ def HeldBlock():
                 for j in range(4):
                     if hold_block[j][i] != globals.hold_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
-                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
-                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
-                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
-        globals.hold_block_old = copy.deepcopy(hold_block)
+                    DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])        globals.hold_block_old = copy.deepcopy(hold_block)
 
 def UpdateLines():
     offsetX = 92

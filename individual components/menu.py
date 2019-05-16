@@ -1,8 +1,7 @@
 #State Machine for Main Menu selection screen options
-import screen
 import globals
-from enum import Enum
 import screen
+from enum import Enum
 
 States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P GAME_OVER')
 state = States.init

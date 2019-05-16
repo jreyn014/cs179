@@ -124,6 +124,7 @@ def tick():
             tempo = 60000 / (1.5 * katyusha_tempo)
             timer = 0
             duration = song[index][1] * tempo
+            note = song[index][0]
             freq = getFrequency(note)
             pwm.ChangeFrequency(freq)
             duty = 50

@@ -51,6 +51,7 @@ def main():
         period_main = gcd(period_main, task.period)
     
     screen.SetupGameScreen()
+    screen.Menu()
     
     while True:
         screen.MainGame()

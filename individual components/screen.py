@@ -69,7 +69,6 @@ def WriteWord(word):
     spi.xfer2([word >> 8, word & 0x00FF])
 
 def Write565(data, count):
-    data = ~data #COMMENT ME TO INVERT
     while(count > 0):
         spi.xfer2([data >> 8, data & 0x00FF])
         count = count - 1
@@ -85,55 +84,24 @@ def SetAddrWindow(x0, y0, x1, y1):
 def DrawPixel(x, y, color):
     SetAddrWindow(x, y, x, y)
     WriteCommand(RAMWR)
-    Write565(color, 1)
+    Write565(~color, 1)
 
 def FillRect(x0, y0, x1, y1, color):
     width = x1 - x0 + 1
     height = y1 - y0 + 1
     SetAddrWindow(x0, y0, x1, y1)
     WriteCommand(RAMWR)
-    Write565(color, width * height)
+    Write565(~color, width * height)
 
-FieldColor = 0xC618
-
-def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
+def ColorLUT(inputChar):
     if inputChar == '.':
-        return FieldColor 
+        return 0x738E
     elif inputChar == 'T':
-<<<<<<< HEAD
-=======
-        return 0xFFE1
-    elif inputChar == 'S':
-        return 0x27FA
-    elif inputChar == 'I':
-        return 0xFFFF
-    elif inputChar == 'O':
-        return 0x201F
-    elif inputChar == 'J':
-        return 0x27E0
-    elif inputChar == 'L':
-        return 0xF81F
-    elif inputChar == 'Z':
-        return 0xF800
-    elif inputChar == '>':
-        return 0x0000
-    elif inputChar == '<':
-        return 0x0000
-    elif inputChar == '=':
-        return 0x0000
-    elif inputChar == '^':
-        return 0x0000
-
-def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
-    if inputChar == '.':
-        return FieldColor 
-    elif inputChar == 'T':
->>>>>>> 5f93458e5b5a7bc798a9e5e62f560c6fd98ffb3f
         return 0x94C0
     elif inputChar == 'S':
         return 0x0B6B
     elif inputChar == 'I':
-        return 0x2104
+        return 0xFFFF
     elif inputChar == 'O':
         return 0x0012
     elif inputChar == 'J':
@@ -152,34 +120,23 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
         return 0x0000
 
 def SetupGameScreen():
-<<<<<<< HEAD
     FillRect(0, 0, 127, 159, ~0xFFFF)
-#    for i in range(10):
-#        for j in range(5):
-#            for k in range(5):
-#                DrawPixel(j + 10, k + i * 10 + 10, ColorLUT(screen_characters.numbers[i][k][j]))
-=======
-    FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
-    DrawBricks()
->>>>>>> 5f93458e5b5a7bc798a9e5e62f560c6fd98ffb3f
 
 def DrawBricks():
-    Fill_Color = 0x9492
+    Fill_Color = 0xDEBD
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)
     for i in range(80):
-        t = i*2
-        FillRect(0,t+1,84,t+1,Outline_Color)
-        if (i % 2) == 1:
+        FillRect(0,i*2,84,i*2,Outline_Color)
+        if (i % 2) == 0:
             for j in range(1,22):
-                DrawPixel(j*4-1,t,Outline_Color)
+                DrawPixel(j*4-1,i+1,Outline_Color)
         else:
             for k in range(1,22):
-                DrawPixel(k*4-3,t,Outline_Color)
-    FillRect(8,0,77,146,FieldColor)
+                DrawPixel(j*4-3,i+1,Outline_Color)
+    FillRect(8,13,77,159,0x738E)
 
 def DrawSquare(x0,y0,x1,y1,color):
-<<<<<<< HEAD
     if x1 < x0:
         t = x1
         x1 = x0
@@ -194,35 +151,50 @@ def DrawSquare(x0,y0,x1,y1,color):
     FillRect(x0,y1-1,x0,y0+1,ColorLUT(color))
     FillRect(x0+1,y0+1,x1-1,y1-1,ColorLUT(color))
 
-=======
-    if color == '.':
-        FillRect(x0,y0,x1,y1,ColorLUT(color))
-    else: 
-        if x1 < x0:
-            t = x1
-            x1 = x0
-            x0 = t
-        if y1 < y0:
-            t = y1
-            y1 = y0
-            y0 = t
-        FillRect(x0,y0,x1,y0,ColorLUT2(color))
-        FillRect(x0,y1,x1,y1,ColorLUT2(color))
-        y1 = y1 - 1
-        y0 = y0 + 1
-        FillRect(x0,y0,x0,y1,ColorLUT2(color))
-        FillRect(x1,y0,x1,y1,ColorLUT2(color))
-        x0 = x0 + 1
-        x1 = x1 - 1
-        FillRect(x0,y0,x1,y1,ColorLUT(color))
->>>>>>> 5f93458e5b5a7bc798a9e5e62f560c6fd98ffb3f
+def Menu():
+    if globals.game_map == None:
+#        FillRect(0, 0, 127, 159, 0xFFFF)
+        offsetX = 40
+        offsetY = 70
+        LetterSize = 6
+        for i in range(5):
+            for j in range(5):
+                DrawPixel(i + offsetX - 10, j + offsetY, ColorLUT(screen_characters.arrow[j][i]))
+
+                DrawPixel(i + offsetX, j + offsetY, ColorLUT(screen_characters.numbers[1][j][i]))
+                DrawPixel(i + offsetX + LetterSize, j + offsetY, ColorLUT(screen_characters.P[j][i]))
+                DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY, ColorLUT(screen_characters.G[j][i]))
+                DrawPixel(i + offsetX + 4 * LetterSize, j + offsetY, ColorLUT(screen_characters.A[j][i]))
+                DrawPixel(i + offsetX + 5 * LetterSize, j + offsetY, ColorLUT(screen_characters.M[j][i]))
+                DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY, ColorLUT(screen_characters.E[j][i]))
+
+                DrawPixel(i + offsetX, j + offsetY + 10, ColorLUT(screen_characters.numbers[2][j][i]))
+                DrawPixel(i + offsetX + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.P[j][i]))
+                DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.G[j][i]))
+                DrawPixel(i + offsetX + 4 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.A[j][i]))
+                DrawPixel(i + offsetX + 5 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.M[j][i]))
+                DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
+
+def MoveMenuArrowUp():
+    for i in range(5):
+        for j in range(5):
+            DrawPixel(i + 30, j + 70, ColorLUT(screen_characters.arrow[j][i]))
+    FillRect(30, 80, 34, 84, 0x0000)
+
+def MoveMenuArrowDown():
+    for i in range(5):
+        for j in range(5):
+            DrawPixel(i + 30, j + 80, ColorLUT(screen_characters.arrow[j][i]))
+    FillRect(30, 70, 34, 74, 0x0000)
 
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
+            FillRect(0, 0, 128, 160, 0x0000)
             for i in range(1,11):
                 for j in range(21):
-                    DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
+                    DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
+                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
             offsetX = 92
             LetterSize = 6
             for i in range(5):
@@ -261,7 +233,8 @@ def MainGame():
             for i in range(1,11):
                 for j in range(21):
                     if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-                        DrawSquare(7*i+1,7*j,7*i+7,7*j+6,globals.game_map.map[j][i])
+                        DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
+                        #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
 def NextBlock():
@@ -274,10 +247,12 @@ def NextBlock():
                 for j in range(4):
                     if next_block[j][i] != globals.next_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
+                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, next_block[j][i])
+                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.next_block.block[j][i]))
         globals.next_block_old = copy.deepcopy(next_block)
 
 def HeldBlock():
@@ -291,13 +266,14 @@ def HeldBlock():
                 for j in range(4):
                     if hold_block[j][i] != globals.hold_block_old[j][i]:
                         DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
+                        #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         else:
             for i in range(4):
                 for j in range(4):
                     DrawSquare(7* i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, hold_block[j][i])
+                    #FillRect(7 * i + offsetX, 7 * j + offsetY, 7 * i + 6 + offsetX, 7 * j + 6 + offsetY, ColorLUT(globals.hold_block.block[j][i]))
         globals.hold_block_old = copy.deepcopy(hold_block)
 
-<<<<<<< HEAD
 def UpdateLines():
     offsetX = 92
     offsetY = 100
@@ -319,5 +295,3 @@ def UpdateLines():
                     DrawPixel(i + offsetX + 15, j + offsetY + 30, ColorLUT(screen_characters.numbers[int(lines[3] / 10)][j][i]))
                     DrawPixel(i + offsetX + 22, j + offsetY + 30, ColorLUT(screen_characters.numbers[lines[3] % 10][j][i]))
         lines_old = copy.deepcopy(lines)
-=======
->>>>>>> 5f93458e5b5a7bc798a9e5e62f560c6fd98ffb3f

@@ -1,4 +1,5 @@
 #State Machine for Main Menu selection screen options
+import screen
 import globals
 from enum import Enum
 
@@ -20,7 +21,8 @@ def tick():
             globals.game_play = True
             state = States.GAME_1P
         elif buttons["Down"]:
-            print("--> 2P Game")
+            screen.MoveMenuArrowDown()
+            #print("--> 2P Game")
             state = States.GAME_SELECT_2P
         else:
             state = States.GAME_SELECT_1P
@@ -46,7 +48,8 @@ def tick():
             print("  --> Host Game")
             state = States.GAME_SELECT_HOST
         elif buttons["Up"]:
-            print("--> 1P Game")
+            screen.MoveMenuArrowUp()
+            #print("--> 1P Game")
             state = States.GAME_SELECT_1P
         else:
             state = States.GAME_SELECT_2P

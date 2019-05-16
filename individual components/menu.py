@@ -94,7 +94,7 @@ def tick():
             state = States.GAME_2P
     
     elif state == States.GAME_OVER:
-        if buttons["A"]:
+        if buttons["B"]:
             state = States.GAME_SELECT_1P
         else:
             state = States.GAME_OVER

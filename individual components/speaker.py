@@ -119,6 +119,16 @@ def tick():
 
     elif state == States.PWM_OFF:
         if globals.game_play == True:
+
+#            pwm.start(50)
+#            pwm.ChangeFrequency(440) #change freq
+#           # globals.pwm.start(50)
+#            song = katyusha
+#            index = -1
+#            tempo = 60000 / (8 * katyusha_tempo)
+#            timer = 0
+#            duration = 0
+#            print('PWM_OFF')
             song = katyusha
             index = 0
             tempo = 60000 / (1.5 * katyusha_tempo)
@@ -135,6 +145,24 @@ def tick():
 
     elif state == States.PWM_ON:
         if globals.game_play == True:
+#            if timer > duration:
+#                index += 1
+#                if index >= len(song):
+#                    index = 0
+#                    print("Song Loop")
+#                note = song[index][0]
+#                duration = song[index][1] * tempo
+#                if note == 0:
+#                    #freq = .01
+#                    pwm.ChangeDutyCycle(0)
+#                else:
+#                    freq = getFrequency(note)
+#                    pwm.ChangeDutyCycle(50)
+#               # print("    "+str(note)+": "+str(freq))
+#                pwm.ChangeFrequency(freq)
+#                timer = 0
+#       # print 'PWM_ON'
+#            timer += globals.speaker_period
             state = States.PWM_ON
         else:
             pwm.stop()

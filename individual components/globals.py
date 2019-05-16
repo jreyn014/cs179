@@ -10,6 +10,7 @@ buttons = {
 "Right" : False
 }
 
+flag = 1
 game_map = None
 game_map_old = None
 game_play = False

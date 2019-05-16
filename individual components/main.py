@@ -47,6 +47,22 @@ def main():
     period_main = tasks[0].period
     for task in tasks:
         period_main = gcd(period_main, task.period)
+
+#    while True:
+#        if globals.flag == 1:
+#            screen.SetupGameScreen()
+#            screen.Menu()
+#            globals.flag = 0
+#    
+#        while True:
+#            screen.MainGame()
+#            screen.NextBlock()
+#            screen.HeldBlock()
+#            screen.UpdateLines()
+#            threading.Thread(target=main_tick,args=[period_main]).start()
+#            time.sleep(period_main/1000)
+#            if globals.game_play == False:
+#                break
     
     while True:
         threading.Thread(target=main_tick,args=[period_main]).start()

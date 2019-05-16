@@ -84,14 +84,14 @@ def SetAddrWindow(x0, y0, x1, y1):
 def DrawPixel(x, y, color):
     SetAddrWindow(x, y, x, y)
     WriteCommand(RAMWR)
-    Write565(~color, 1)
+    Write565(color, 1)
 
 def FillRect(x0, y0, x1, y1, color):
     width = x1 - x0 + 1
     height = y1 - y0 + 1
     SetAddrWindow(x0, y0, x1, y1)
     WriteCommand(RAMWR)
-    Write565(~color, width * height)
+    Write565(color, width * height)
 
 FieldColor = 0xC618
 
@@ -151,6 +151,7 @@ def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
 
 def DrawBricks():
+    FillRect(0,0,127,159,0x0000)
     Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)

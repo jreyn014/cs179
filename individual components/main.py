@@ -18,11 +18,11 @@ class Task:
 #end def Task
 
 # Task(SM, milliseconds)
-task_buttons = Task(buttons.tick,50)
-task_menu = Task(menu.tick,50)
-globals.speaker_period = 50
+task_buttons = Task(buttons.tick,100)
+task_menu = Task(menu.tick,100)
+globals.speaker_period = 100
 task_speaker = Task(speaker.tick,globals.speaker_period)
-task_game = Task(game.tick,50)
+task_game = Task(game.tick,100)
 
 tasks = [ task_buttons, task_menu, task_speaker, task_game ]
 
@@ -47,22 +47,6 @@ def main():
     period_main = tasks[0].period
     for task in tasks:
         period_main = gcd(period_main, task.period)
-
-#    while True:
-#        if globals.flag == 1:
-#            screen.SetupGameScreen()
-#            screen.Menu()
-#            globals.flag = 0
-#    
-#        while True:
-#            screen.MainGame()
-#            screen.NextBlock()
-#            screen.HeldBlock()
-#            screen.UpdateLines()
-#            threading.Thread(target=main_tick,args=[period_main]).start()
-#            time.sleep(period_main/1000)
-#            if globals.game_play == False:
-#                break
     
     while True:
         threading.Thread(target=main_tick,args=[period_main]).start()

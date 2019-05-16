@@ -92,7 +92,7 @@ def tick():
             pass
             #globals.game_play = False
             #print("--> 2P Game")
-            #state = States.GAME_SELECT_2P
+            state = States.GAME_SELECT_2P
         else:
             state = States.GAME_2P
     

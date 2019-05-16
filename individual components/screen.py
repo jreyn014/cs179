@@ -151,7 +151,7 @@ def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
 
 def DrawBricks():
-    FillRect(0,0,127,159,0x52AA)
+    FillRect(0,0,127,159,0x8C51)
     Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)

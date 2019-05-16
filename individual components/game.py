@@ -235,6 +235,10 @@ def tick():
         
     elif state == States.GAME_OFF:
         if globals.game_play == True:
+            screen.MainGame()
+            screen.NextBlock()
+            screen.HeldBlock()
+            screen.UpdateLines()
             game_map = Map()
             active_block = Block()
             next_block = Block()
@@ -254,6 +258,12 @@ def tick():
         if globals.game_play == True:
             state = States.GAME_ON
         else:
+            game_map = None
+            game_map_old = None
+            hold_block = None
+            hold_block_old = None
+            next_block = None
+            next_block_old = None
             state = States.GAME_OFF
         
     else:
@@ -316,12 +326,6 @@ def tick():
                 hold_latch = False
                 if isCollision(game_map,active_block):
                     globals.game_play = False   #GAME OVER
-                    game_map = None
-                    game_map_old = None
-                    hold_block = None
-                    hold_block_old = None
-                    next_block = None
-                    next_block_old = None
             autodown_count = 0
         else:
             autodown_count += sum(lines)/10 + 1
@@ -338,7 +342,7 @@ def tick():
                 clear_lines = 0
             else:
                 clear_count += sum(lines)/20 + 1
-        
+
         globals.hold_block = hold_block
         globals.hold_block.print_Block()
         globals.game_map = game_map.set(active_block)
@@ -347,5 +351,10 @@ def tick():
         globals.next_block.print_Block()
         for i in range(4):
             globals.lines[i] = lines[i]
+        
+        screen.MainGame()
+        screen.NextBlock()
+        screen.HeldBlock()
+        screen.UpdateLines()
             
 #end def tick

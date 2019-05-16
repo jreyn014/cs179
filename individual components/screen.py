@@ -226,7 +226,7 @@ def MoveMenuArrowDown():
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
-            FillRect(0, 0, 128, 160, 0x0000)
+            DrawBricks()
             for i in range(1,11):
                 for j in range(21):
                     DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])

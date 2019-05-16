@@ -152,7 +152,6 @@ def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
 
 def DrawBricks():
-    FillRect(85,0,127,159,0x0000)
     Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)
@@ -228,6 +227,7 @@ def MoveMenuArrowDown():
 def MainGame():
     if globals.game_map != None:
         if globals.game_map_old == None:
+            FillRect(85,0,127,159,0x0000)
             DrawBricks()
             for i in range(1,11):
                 for j in range(21):

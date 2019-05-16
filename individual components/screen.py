@@ -69,6 +69,7 @@ def WriteWord(word):
     spi.xfer2([word >> 8, word & 0x00FF])
 
 def Write565(data, count):
+    color = ~color #comment me to invert
     while(count > 0):
         spi.xfer2([data >> 8, data & 0x00FF])
         count = count - 1
@@ -151,7 +152,7 @@ def SetupGameScreen():
     FillRect(0, 0, 127, 159, 0xFFFF)#0x31A6)
 
 def DrawBricks():
-    FillRect(0,0,127,159,0x8C51)
+    FillRect(0,0,127,159,0x0000)
     Fill_Color = 0x9492
     Outline_Color = 0x2965
     FillRect(0,0,84,159,Fill_Color)

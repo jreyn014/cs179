@@ -203,7 +203,7 @@ hold_block = Block()
 hold_latch = False
 lines = [0,0,0,0]
 button_latch = {
-"A"     : False, 
+"A"     : True, 
 "B"     : False, 
 "Up"    : False, 
 "Down"  : False, 
@@ -316,6 +316,12 @@ def tick():
                 hold_latch = False
                 if isCollision(game_map,active_block):
                     globals.game_play = False   #GAME OVER
+                    game_map = None
+                    game_map_old = None
+                    hold_block = None
+                    hold_block_old = None
+                    next_block = None
+                    next_block_old = None
             autodown_count = 0
         else:
             autodown_count += sum(lines)/10 + 1

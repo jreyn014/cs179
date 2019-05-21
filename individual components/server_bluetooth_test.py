@@ -2,7 +2,7 @@ import bluetooth
 #import socket
 #hostMACAddress = "B8:27:EB:A6:9E7E" #Jesus
 #hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
-#hostMACAddress = ""
+#hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 port = 3
 backlog = 1
 size = 1024

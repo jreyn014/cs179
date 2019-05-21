@@ -5,8 +5,10 @@ import bluetooth
 print "performing inquiry..."
 nearby_devices = bluetooth.discover_devices(lookup_names = True)
 print "found %d devices" % len(nearby_devices)
-#hostMACAddr = "B8:27:EB:A6:9E7E" #Jesus'
-#hostMACAddr = "B8:27:EB:1A:E0:6F" #Nicke's
+
+#hostMACAddr = "B8:27:EB:A6:9E7E" #Jesus
+#hostMACAddr = "B8:27:EB:1A:E0:6F" #Nicke
+
 port = 3
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 

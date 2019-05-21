@@ -24,7 +24,8 @@ globals.speaker_period = 50
 task_speaker = Task(speaker.tick,globals.speaker_period)
 task_game = Task(game.tick,50)
 
-tasks = [ task_buttons, task_menu, task_speaker, task_game ]
+#tasks = [ task_buttons, task_menu, task_speaker, task_game ]
+tasks = [task_buttons, task_menu, task_game]
 
 def gcd(x, y):
     while y:
@@ -50,6 +51,7 @@ def main():
         
     screen.SetupGameScreen()
     screen.Menu()
+    threading.Thread(target=speaker.tick).start()
     
     while True:
         screen.MainGame()
@@ -58,6 +60,6 @@ def main():
         screen.UpdateLines()
         threading.Thread(target=main_tick,args=[period_main]).start()
         time.sleep(period_main/1000)
-    
+        
     return 0
 main()

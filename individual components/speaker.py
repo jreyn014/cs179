@@ -97,7 +97,7 @@ duty = 0
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pwmPin, GPIO.OUT)
-pwm = GPIO.PWM(pwmPin, 440)
+pwm = GPIO.PWM(pwmPin, 0.01)
 pwm.stop()
 
 def tick():
@@ -110,65 +110,68 @@ def tick():
     global pwm
     global freq
     global duty
-
-    #Transitions
-    if state == States.init:
-        duty = 0
-        pwm.stop()
-        state = States.PWM_OFF
-
-    elif state == States.PWM_OFF:
-        if globals.game_play == True:
-            song = katyusha
-            index = 0
-            tempo = 60000 / (1.5 * katyusha_tempo)
-            timer = 0
-            duration = song[index][1] * tempo
-            note = song[index][0]
-            freq = getFrequency(note)
-            pwm.ChangeFrequency(freq)
-            duty = 50
-            pwm.ChangeDutyCycle(duty)
-            state = States.PWM_ON
-        else:
-            state = States.PWM_OFF
-
-    elif state == States.PWM_ON:
-        if globals.game_play == True:
-            state = States.PWM_ON
-        else:
+    
+    while True:
+        #Transitions
+        if state == States.init:
+            duty = 0
             pwm.stop()
             state = States.PWM_OFF
-    else:
-        state = States.init
 
-    #Actions
-    if state == States.init:
-        pass
-    elif state == States.PWM_OFF:
-        pass
-    elif state == States.PWM_ON:
-        if timer > duration:
-            index += 1
-            if index >= len(song):
+        elif state == States.PWM_OFF:
+            if globals.game_play == True:
+                song = katyusha
                 index = 0
-                #print("Song Loop")
-            note = song[index][0]
-            duration = song[index][1] * tempo
-            if note == 0:
-                if duty != 0:
-                    duty = 0
-                    pwm.ChangeDutyCycle(duty)
-            else:
+                tempo = 60000 / (1.5 * katyusha_tempo)
+                timer = 0
+                duration = song[index][1] * tempo
+                note = song[index][0]
                 freq = getFrequency(note)
                 pwm.ChangeFrequency(freq)
-                if duty != 50:
-                    duty = 50
-                    pwm.ChangeDutyCycle(duty)
-            
-            #print("    "+str(note)+": "+str(freq)) 
-            timer = 0
-        timer += globals.speaker_period
+                duty = 50
+                pwm.ChangeDutyCycle(duty)
+                pwm.start(duty)
+                state = States.PWM_ON
+            else:
+                state = States.PWM_OFF
+
+        elif state == States.PWM_ON:
+            if globals.game_play == True:
+                state = States.PWM_ON
+            else:
+                pwm.stop()
+                state = States.PWM_OFF
+        else:
+            state = States.init
+
+        #Actions
+        if state == States.init:
+            pass
+        elif state == States.PWM_OFF:
+            pass
+        elif state == States.PWM_ON:
+            if timer > duration:
+                index += 1
+                if index >= len(song):
+                    index = 0
+                    #print("Song Loop")
+                note = song[index][0]
+                duration = song[index][1] * tempo
+                if note == 0:
+                    if duty != 0:
+                        duty = 0
+                        pwm.ChangeDutyCycle(duty)
+                else:
+                    freq = getFrequency(note)
+                    pwm.ChangeFrequency(freq)
+                    if duty != 50:
+                        duty = 50
+                        pwm.ChangeDutyCycle(duty)
+                
+                #print("    "+str(note)+": "+str(freq)) 
+                timer = 0
+            timer += globals.speaker_period
+        time.sleep(globals.speaker_period / 1000)
 #end def tick
 
 #while 1:

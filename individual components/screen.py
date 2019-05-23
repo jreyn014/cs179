@@ -118,7 +118,7 @@ def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
     elif inputChar == '<':
         return 0x0000
     elif inputChar == '=':
-        return 0x0000
+        return 0xFFFF
     elif inputChar == '^':
         return 0x0000
 
@@ -144,12 +144,12 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
     elif inputChar == '<':
         return 0x0000
     elif inputChar == '=':
-        return 0x0000
+        return 0xFFFF
     elif inputChar == '^':
         return 0x0000
 
-def SetupGameScreen():
-    FillRect(0, 0, 127, 159, ~0xFFFF)#0x31A6)
+#def SetupGameScreen():
+#    FillRect(0, 0, 127, 159, ~0xFFFF)#0x31A6)
 
 def DrawBricks():
     Fill_Color = 0x9492
@@ -201,11 +201,14 @@ def DrawSquare(x0,y0,x1,y1,color):
         FillRect(x0,y0,x1,y1,ColorLUT(color))
 
 def Menu():
-    if globals.game_play == False:
-#        FillRect(0, 0, 127, 159, 0xFFFF)
+#    if globals.game_play == False:
+    if globals.output_menu:
+        globals.output_menu = False
         offsetX = 40
         offsetY = 70
         LetterSize = 6
+#        FillRect(offsetX - 2 * LetterSize, offsetY - LetterSize, offsetX + 8 * LetterSize, offsetY + (int)(3.5 * LetterSize), ~0xFFFF)
+        FillRect(0, 0, 127, 159, 0x0000)
         for i in range(5):
             for j in range(5):
                 DrawPixel(i + offsetX - 10, j + offsetY, ColorLUT(screen_characters.arrow[j][i]))
@@ -328,19 +331,20 @@ def UpdateLines():
     offsetY = 100
     lines = globals.lines
     lines_old = globals.lines_old
-    if lines != lines_old:
-        for i in range(5):
-            for j in range(5):
-                if lines[0] != lines_old[0]:
-                    DrawPixel(i + offsetX + 15, j + offsetY, ColorLUT(screen_characters.numbers[int(lines[0] / 10)][j][i]))
-                    DrawPixel(i + offsetX + 22, j + offsetY, ColorLUT(screen_characters.numbers[lines[0] % 10][j][i]))
-                if lines[1] != lines_old[1]:
-                    DrawPixel(i + offsetX + 15, j + offsetY + 10, ColorLUT(screen_characters.numbers[int(lines[1] / 10)][j][i]))
-                    DrawPixel(i + offsetX + 22, j + offsetY + 10, ColorLUT(screen_characters.numbers[lines[1] % 10][j][i]))
-                if lines[2] != lines_old[2]:
-                    DrawPixel(i + offsetX + 15, j + offsetY + 20, ColorLUT(screen_characters.numbers[int(lines[2] / 10)][j][i]))
-                    DrawPixel(i + offsetX + 22, j + offsetY + 20, ColorLUT(screen_characters.numbers[lines[2] % 10][j][i]))
-                if lines[3] != lines_old[3]:
-                    DrawPixel(i + offsetX + 15, j + offsetY + 30, ColorLUT(screen_characters.numbers[int(lines[3] / 10)][j][i]))
-                    DrawPixel(i + offsetX + 22, j + offsetY + 30, ColorLUT(screen_characters.numbers[lines[3] % 10][j][i]))
-        lines_old = copy.deepcopy(lines)
+    if globals.game_play == True:
+        if lines != lines_old:
+            for i in range(5):
+                for j in range(5):
+                    if lines[0] != lines_old[0]:
+                        DrawPixel(i + offsetX + 15, j + offsetY, ColorLUT(screen_characters.numbers[int(lines[0] / 10)][j][i]))
+                        DrawPixel(i + offsetX + 22, j + offsetY, ColorLUT(screen_characters.numbers[lines[0] % 10][j][i]))
+                    if lines[1] != lines_old[1]:
+                        DrawPixel(i + offsetX + 15, j + offsetY + 10, ColorLUT(screen_characters.numbers[int(lines[1] / 10)][j][i]))
+                        DrawPixel(i + offsetX + 22, j + offsetY + 10, ColorLUT(screen_characters.numbers[lines[1] % 10][j][i]))
+                    if lines[2] != lines_old[2]:
+                        DrawPixel(i + offsetX + 15, j + offsetY + 20, ColorLUT(screen_characters.numbers[int(lines[2] / 10)][j][i]))
+                        DrawPixel(i + offsetX + 22, j + offsetY + 20, ColorLUT(screen_characters.numbers[lines[2] % 10][j][i]))
+                    if lines[3] != lines_old[3]:
+                        DrawPixel(i + offsetX + 15, j + offsetY + 30, ColorLUT(screen_characters.numbers[int(lines[3] / 10)][j][i]))
+                        DrawPixel(i + offsetX + 22, j + offsetY + 30, ColorLUT(screen_characters.numbers[lines[3] % 10][j][i]))
+            lines_old = copy.deepcopy(lines)

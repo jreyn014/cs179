@@ -279,9 +279,9 @@ def MainGame():
             FillRect(85,0,127,159,0x0000)
             DrawBricks()
             for i in range(1,11):
-                for j in range(21):
-                    DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
-                    #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+                for j in range(19,40):
+                    j2 = j-19
+                    DrawSquare(7*i,7*j2,7*i+6,7*j2+6,globals.game_map.map[j2][i])
             offsetX = 92
             LetterSize = 6
             for i in range(5):
@@ -318,10 +318,10 @@ def MainGame():
             FillRect(10 + offsetX, 100, 10 + offsetX, 135, 0xFFFF)
         else:
             for i in range(1,11):
-                for j in range(21):
-                    if globals.game_map_old.map[j][i] != globals.game_map.map[j][i]:
-                        DrawSquare(7*i,7*j,7*i+6,7*j+6,globals.game_map.map[j][i])
-                        #FillRect(7 * i, 7 * j, 7 * i + 6, 7 * j + 6, ColorLUT(globals.game_map.map[j][i]))
+                for j in range(19,40):
+                    j2 = j-19
+                    if globals.game_map_old.map[j2][i] != globals.game_map.map[j2][i]:
+                        DrawSquare(7*i,7*j2,7*i+6,7*j2+6,globals.game_map.map[j2][i])
         globals.game_map_old = copy.deepcopy(globals.game_map)
 
 def NextBlock():

@@ -254,12 +254,12 @@ def tick():
         if globals.game_play == True:
             state = States.GAME_ON
         else:
-            game_map = None
-            game_map_old = None
-            hold_block = None
-            hold_block_old = None
-            next_block = None
-            next_block_old = None
+            globals.game_map = None
+            globals.game_map_old = None
+            globals.hold_block = None
+            globals.hold_block_old = None
+            globals.next_block = None
+            globals.next_block_old = None
             state = States.GAME_OFF
         
     else:

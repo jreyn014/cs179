@@ -75,7 +75,7 @@ class Block:
     
     def move_Down(self,index=1):
         B = copy.deepcopy(self)
-        B.index[0] += inedex
+        B.index[0] += index
         return B
     #end def move_Down
     

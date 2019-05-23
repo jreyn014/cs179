@@ -98,7 +98,7 @@ FieldColor = 0x8410
 
 def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
     if inputChar == '.':
-        return 0x8410
+        return FieldColor
     elif inputChar == 'T':
         return 0xFFE1
     elif inputChar == 'S':
@@ -113,6 +113,8 @@ def ColorLUT(inputChar): #DONT delete me, if confused check google drive :)
         return 0xF81F
     elif inputChar == 'Z':
         return 0xF800
+    elif inputChar == 'Q':
+        return 0x4228
     elif inputChar == '>':
         return 0x0000
     elif inputChar == '<':
@@ -139,6 +141,8 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
         return 0x8010
     elif inputChar == 'Z':
         return 0x6800
+    elif inputChar == 'Q':
+        return 0x3186
     elif inputChar == '>':
         return 0x0000
     elif inputChar == '<':

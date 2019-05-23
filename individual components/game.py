@@ -61,21 +61,21 @@ class Block:
         self.n = len(self.block[0])
         self.index = [0,4] #Top left of n x n block
     
-    def move_Left(self):
+    def move_Left(self,index=1):
         B = copy.deepcopy(self)
-        B.index[1] -= 1
+        B.index[1] -= index
         return B
     #end def move_Left
     
-    def move_Right(self):
+    def move_Right(self,index=1):
         B = copy.deepcopy(self)
-        B.index[1] += 1
+        B.index[1] += index
         return B
     #end def move_Right
     
-    def move_Down(self):
+    def move_Down(self,index=1):
         B = copy.deepcopy(self)
-        B.index[0] += 1
+        B.index[0] += inedex
         return B
     #end def move_Down
     
@@ -295,7 +295,7 @@ def tick():
             if isCollision(game_map,test_block):
                 test_block = test_block.move_Left()
                 if isCollision(game_map,test_block):
-                    test_block = test_block.move_Right()
+                    test_block = test_block.move_Right(2)
             
         elif buttons["B"] and not button_latch["B"]:           #Rotate Clockwise
             button_latch["B"] = True
@@ -303,7 +303,7 @@ def tick():
             if isCollision(game_map,test_block):
                 test_block = test_block.move_Left()
                 if isCollision(game_map,test_block):
-                    test_block = test_block.move_Right()
+                    test_block = test_block.move_Right(2)
             
         elif buttons["Left"] and not button_latch["Left"]:     #Move Left
             button_latch["Left"] = True

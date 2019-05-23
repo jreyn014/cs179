@@ -289,19 +289,27 @@ def tick():
             test_block = Block(temp.key)
             autodown_count = 0
         
-        if buttons["A"] and not button_latch["A"]:           #Rotate Anticlockwise
+        elif buttons["A"] and not button_latch["A"]:           #Rotate Anticlockwise
             button_latch["A"] = True
             test_block = active_block.rotate_ACW()
+            if not isCollision(game_map,test_block):
+                test_block = active_block.move_Left()
+                if not isCollision(game_map,test_block):
+                    test_block = active_block.move_Right()
             
-        if buttons["B"] and not button_latch["B"]:           #Rotate Clockwise
+        elif buttons["B"] and not button_latch["B"]:           #Rotate Clockwise
             button_latch["B"] = True
             test_block = active_block.rotate_CW()
+            if not isCollision(game_map,test_block):
+                test_block = active_block.move_Left()
+                if not isCollision(game_map,test_block):
+                    test_block = active_block.move_Right()
             
-        if buttons["Left"] and not button_latch["Left"]:     #Move Left
+        elif buttons["Left"] and not button_latch["Left"]:     #Move Left
             button_latch["Left"] = True
             test_block = active_block.move_Left()
             
-        if buttons["Right"] and not button_latch["Right"]:   #Move Right
+        elif buttons["Right"] and not button_latch["Right"]:   #Move Right
             button_latch["Right"] = True
             test_block = active_block.move_Right()
         
@@ -322,6 +330,13 @@ def tick():
                 hold_latch = False
                 if isCollision(game_map,active_block):
                     globals.game_play = False   #GAME OVER
+                    globals.hold_block = hold_block
+                    globals.hold_block.print_Block()
+                    globals.game_map = game_map.set(active_block)
+                    globals.game_map.print_Map()
+                    globals.next_block = next_block
+                    globals.next_block.print_Block()
+                    return False
             autodown_count = 0
         else:
             autodown_count += sum(lines)/10 + 1

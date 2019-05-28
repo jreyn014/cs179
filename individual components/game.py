@@ -377,7 +377,7 @@ def tick():
         #Check lines
         if clear_lines > 0:
             if clear_count >=10:
-                for row in range(21):
+                for row in range(19,41):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
                         game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])

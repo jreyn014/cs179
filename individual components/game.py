@@ -350,12 +350,13 @@ def tick():
                 clear_lines = game_map.checkLines()
                 
                 #threading.Thread(target=bt.send,args=[str(clear_lines)]).start()
+                globals.atk_in += clear_lines
                 
                 while(globals.atk_in >= 2):
-                    game_map.map.pop(0)
                     atk = ['>','Q','Q','Q','Q','Q','Q','Q','Q','Q','Q','<']
                     atk[random.randint(1,10)] = '.'
                     game_map.map.insert(39,atk)
+                    game_map.map.pop(0)
                     globals.atk_in -= 2
                 
                 active_block = Block(next_block.key)

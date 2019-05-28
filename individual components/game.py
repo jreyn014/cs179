@@ -3,7 +3,7 @@ from enum import Enum
 import random
 import copy
 import screen
-import combined_btooth as bt
+#import combined_btooth as bt
 
 Blocks = {
     'I' : [
@@ -190,7 +190,7 @@ class Map:
     def checkLines(self):
         map = self.map
         full_lines = []
-        for row in range(21):
+        for row in range(19,41):
             full = True
             for column in range(1,11):
                 if map[row][column] == '.':
@@ -355,7 +355,7 @@ def tick():
                     game_map.map.pop(0)
                     atk = ['>','Q','Q','Q','Q','Q','Q','Q','Q','Q','Q','<']
                     atk[random.randint(1,10)] = '.'
-                    game_map.map.append(atk)
+                    game_map.map.insert(39,atk)
                     globals.atk_in -= 2
                 
                 active_block = Block(next_block.key)
@@ -377,7 +377,7 @@ def tick():
         #Check lines
         if clear_lines > 0:
             if clear_count >=10:
-                for row in range(21):
+                for row in range(19,41):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
                         game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])

@@ -50,6 +50,7 @@ def tick():
     elif state ==  States.GAME_SELECT_2P:
         if buttons["A"]:
             #print("  --> Host Game")
+            globals.output_hold_menu = True
             state = States.GAME_SELECT_HOST
         elif buttons["Up"]:
             screen.MoveMenuArrowUp()
@@ -65,10 +66,12 @@ def tick():
             globals.game_play = True
             state = States.GAME_2P
         elif buttons["B"]:
+            globals.output_menu = True
             #print("--> 2P Game")
-            state = States.GAME_SELECT_2P
+            state = States.GAME_SELECT_1P
         elif buttons["Down"]:
             #print("  --> Connect to a Game")
+            screen.MoveMenuArrowDown()
             state = States.GAME_SELECT_CONNECT
         else:
             state = States.GAME_SELECT_HOST
@@ -80,9 +83,11 @@ def tick():
             globals.game_play = True
             state = States.GAME_2P
         elif buttons["B"]:
+            globals.output_menu = True
             #print("--> 2P Game")
-            state = States.GAME_SELECT_2P
+            state = States.GAME_SELECT_1P
         elif buttons["Up"]:
+            screen.MoveMenuArrowUp()
             #print("  --> Host Game")
             state = States.GAME_SELECT_HOST
         else:

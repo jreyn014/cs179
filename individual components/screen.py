@@ -233,11 +233,12 @@ def Menu():
 
 def HostMenu():
 #    if globals.game_play == False:
-    if globals.output_menu:
-#        globals.output_menu = False
+    if globals.output_hold_menu:
+        globals.output_hold_menu = False
         offsetX = 40
         offsetY = 70
         LetterSize = 6
+        FillRect(offsetX - 2 * LetterSize, offsetY, 127, 159, 0x0000)
         for i in range(5):
             for j in range(5):
                 DrawPixel(i + offsetX - 10, j + offsetY, ColorLUT(screen_characters.arrow[j][i]))

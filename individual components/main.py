@@ -53,6 +53,7 @@ def main():
     
     while True:
         screen.Menu()
+        screen.HostMenu()
         screen.MainGame()
         screen.NextBlock()
         screen.HeldBlock()

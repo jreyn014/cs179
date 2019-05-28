@@ -3,14 +3,14 @@ import subprocess
 import threading
 
 global s
-#hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
+hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 port = 5
 backlog = 10
 size = 1024
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-#s.bind((hostMACAddress, port))
+s.bind((hostMACAddress, port))
 j = 1
 
 def send():
@@ -73,11 +73,11 @@ def WaitForClient():
     print("Listening")
     s.listen(backlog)
     try:
-	client, clientInfo = s.accept()
+        client, clientInfo = s.accept()
         #while 1:
-	print("Connected", clientInfo)
+        print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
-	threading.Thread(target=send, daemon=True).start()
+        threading.Thread(target=send, daemon=True).start()
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:
@@ -89,6 +89,6 @@ def WaitForClient():
             s.close()
 
 def main():
-    FindClient()
-    #WaitForClient()
+    #FindClient()
+    WaitForClient()
 threading.Thread(target=main).start()

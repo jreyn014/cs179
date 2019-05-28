@@ -19,7 +19,7 @@ def WaitForClient():
 	#hostMACAddress = ""
 	subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 	port = 4
-	backlog = 1
+	backlog = 10
 	size = 1024
 	s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	s.bind((hostMACAddress, port))
@@ -43,5 +43,6 @@ def WaitForClient():
 
 def main():
     WaitForClient()
+    s.close()
 
 threading.Thread(target=main).start()

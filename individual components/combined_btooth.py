@@ -10,7 +10,7 @@ port = 5
 backlog = 10
 size = 1024
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-s.bind((hostMACAddress, port))
+#s.bind((hostMACAddress, port))
 j = 1
 
 def send():
@@ -19,8 +19,8 @@ def send():
         if not data:
            print("Data sucks (send) %s" % data)
            return
-        print ("Sent DATA: %s" % data)
         s.send(data)
+	print("Sent Data: %s" % data)
     except:
         print("No socket created; Did not send")
         s.close()
@@ -51,7 +51,7 @@ def FindClient():
                 print ("Found Pi")
                 s.connect((addr, port))
                 print ("Connected")
-                threading.Thread(target=recv, daemon=True).start()
+                threading.Thread(target=recv).start()
                 #threading.Thread(target=send, daemon=True).start()
         print("Devices are not PLUTO")
     except:
@@ -77,7 +77,7 @@ def WaitForClient():
         #while 1:
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
-        threading.Thread(target=send, daemon=True).start()
+        threading.Thread(target=send).start()
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:

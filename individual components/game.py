@@ -190,7 +190,7 @@ class Map:
     def checkLines(self):
         map = self.map
         full_lines = []
-        for row in range(19,41):
+        for row in range(19,40):
             full = True
             for column in range(1,11):
                 if map[row][column] == '.':
@@ -295,7 +295,6 @@ def tick():
     elif state == States.GAME_ON:
         buttons = globals.buttons
         test_block = active_block
-        #junk_lines = globals.junk_lines
         
         #Unlatch Inputs
         for button in button_latch:
@@ -377,8 +376,8 @@ def tick():
         
         #Check lines
         if clear_lines > 0:
-            if clear_count >= (20 - (sum(lines)/2.5)):
-                for row in range(19,41):
+            if clear_count >= (10 - (sum(lines)/5)):
+                for row in range(19,40):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
                         game_map.map.insert(0,['>','.','.','.','.','.','.','.','.','.','.','<'])

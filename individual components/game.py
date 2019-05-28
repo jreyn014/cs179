@@ -355,7 +355,7 @@ def tick():
                     game_map.map.pop(0)
                     atk = ['>','Q','Q','Q','Q','Q','Q','Q','Q','Q','Q','<']
                     atk[random.randint(1,10)] = '.'
-                    game_map.map.append(atk)
+                    game_map.map.insert(39,atk)
                     globals.atk_in -= 2
                 
                 active_block = Block(next_block.key)

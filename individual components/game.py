@@ -340,7 +340,7 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"]  and not button_latch["Down"] ) or autodown_count >= 20:    #Move Down
+        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines)/5)):    #Move Down
             button_latch["Down"] = True if buttons["Down"] else False
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
@@ -351,13 +351,13 @@ def tick():
                 while(globals.atk_in >= 2):
                     atk = ['>','Q','Q','Q','Q','Q','Q','Q','Q','Q','Q','<']
                     atk[random.randint(1,10)] = '.'
-                    game_map.map.insert(40,atk)
+                    game_map.map.insert(40,atk.copy())
                     game_map.map.pop(0)
                     globals.atk_in -= 2
                 
                 clear_lines = game_map.checkLines()
                 #threading.Thread(target=bt.send,args=[str(clear_lines)]).start()
-                atk_in += clear_lines
+                globals.atk_in += clear_lines
                 
                 active_block = Block(next_block.key)
                 next_block = Block()
@@ -373,11 +373,11 @@ def tick():
                     return False
             autodown_count = 0
         else:
-            autodown_count += sum(lines)/10 + 1
+            autodown_count += 1
         
         #Check lines
         if clear_lines > 0:
-            if clear_count >=10:
+            if clear_count >= (20 - (sum(lines)/2.5)):
                 for row in range(19,41):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)
@@ -386,7 +386,7 @@ def tick():
                 clear_count = 0
                 clear_lines = 0
             else:
-                clear_count += sum(lines)/20 + 1
+                clear_count += 1
 
         globals.hold_block = hold_block
         globals.hold_block.print_Block()

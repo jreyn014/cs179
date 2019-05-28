@@ -3,7 +3,7 @@ from enum import Enum
 import random
 import copy
 import screen
-import combined_btooth as bt
+#import combined_btooth as bt
 
 Blocks = {
     'I' : [
@@ -190,7 +190,7 @@ class Map:
     def checkLines(self):
         map = self.map
         full_lines = []
-        for row in range(21):
+        for row in range(19,41):
             full = True
             for column in range(1,11):
                 if map[row][column] == '.':

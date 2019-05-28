@@ -3,6 +3,7 @@ from enum import Enum
 import random
 import copy
 import screen
+import combined_btooth as bt
 
 Blocks = {
     'I' : [
@@ -347,6 +348,16 @@ def tick():
             else:
                 game_map = game_map.set(active_block)
                 clear_lines = game_map.checkLines()
+                
+                #threading.Thread(target=bt.send,args=[str(clear_lines)]).start()
+                
+                while(globals.atk_in >= 2):
+                    game_map.map.pop(0)
+                    atk = ['>','Q','Q','Q','Q','Q','Q','Q','Q','Q','Q','<']
+                    atk[random.randint(1,10)] = '.'
+                    game_map.map.append(atk)
+                    globals.atk_in -= 2
+                
                 active_block = Block(next_block.key)
                 next_block = Block()
                 hold_latch = False

@@ -20,7 +20,7 @@ def send():
            print("Data sucks (send) %s" % data)
            return
         s.send(data)
-	print("Sent Data: %s" % data)
+        print("Sent Data: %s" % data)
     except:
         print("No socket created; Did not send")
         s.close()
@@ -51,7 +51,9 @@ def FindClient():
                 print ("Found Pi")
                 s.connect((addr, port))
                 print ("Connected")
-                threading.Thread(target=recv).start()
+                t1 = threading.Thread(target=recv)
+                t1.start()
+                t1.join()
                 #threading.Thread(target=send, daemon=True).start()
         print("Devices are not PLUTO")
     except:
@@ -77,7 +79,9 @@ def WaitForClient():
         #while 1:
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
-        threading.Thread(target=send).start()
+        t2 = threading.Thread(target=send)
+        t2.start()
+        t2.join()
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:
@@ -88,7 +92,8 @@ def WaitForClient():
             #client.close()
             s.close()
 
-def main():
-    #FindClient()
-    WaitForClient()
-threading.Thread(target=main).start()
+#def main():
+FindClient()
+    #WaitForClient()
+#main()
+#threading.Thread(target=main).start()

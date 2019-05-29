@@ -6,7 +6,7 @@ global s
 hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
-port = 5
+port = 4
 backlog = 10
 size = 1024
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -52,8 +52,17 @@ def FindClient():
                 s.connect((addr, port))
                 print ("Connected")
                 t1 = threading.Thread(target=recv)
+                t2 = threading.Thread(target=send)
+                t2.start()
                 t1.start()
                 t1.join()
+                t2.join()
+                if t1.is_alive():
+                   print("t1 running")
+                return
+                #t1 = threading.Thread(target=recv)
+                #t1.start()
+                #t1.join()
                 #threading.Thread(target=send, daemon=True).start()
         print("Devices are not PLUTO")
     except:
@@ -79,9 +88,12 @@ def WaitForClient():
         #while 1:
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
+        t1 = threading.Thread(target=recv)
         t2 = threading.Thread(target=send)
+        t1.start()
         t2.start()
         t2.join()
+        t1.join()
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:
@@ -93,7 +105,11 @@ def WaitForClient():
             s.close()
 
 #def main():
-FindClient()
-    #WaitForClient()
+#IF HOST RUN FindClient
+#FindClient()
+#IF CLIENT RUN WaitForClient
+WaitForClient()
 #main()
-#threading.Thread(target=main).start()
+#t1 = threading.Thread(target=recv)
+#t1.start()
+#t1.join()

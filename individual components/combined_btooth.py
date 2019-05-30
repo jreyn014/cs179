@@ -40,11 +40,14 @@ def send(client, i):
 
 
 
-def recv():
+def recv(client, i):
     try:
         while 1:
             print("Waiting to receive data")
-            data = s.recv(size)
+            if i == 1:
+                 data = client.recv(size)
+            else:
+                 data = s.recv(size)
             if not data:
                 print("Wrong Data %s" % data)
             print("received: %s" % data)
@@ -64,7 +67,7 @@ def FindClient():
                 print ("Found Pi")
                 s.connect((addr, port))
                 print ("Connected")
-                t1 = threading.Thread(target=recv)
+                t1 = threading.Thread(target=recv(s, 0))
                 t2 = threading.Thread(target=send(s, 0))
                 t1.start()
                 t2.start()
@@ -101,12 +104,12 @@ def WaitForClient():
         #while 1:
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
-        t1 = threading.Thread(target=recv)
+        t1 = threading.Thread(target=recv(client, 1))
         t2 = threading.Thread(target=send(client, 1))
         t1.start()
         t2.start()
-        t2.join()
         t1.join()
+        t2.join()
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:

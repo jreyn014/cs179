@@ -25,6 +25,7 @@ j = 1
 def send():
     try:
         data = str(j)
+        print("Data: %s" % data)
         if not data:
            print("Data sucks (send) %s" % data)
            return
@@ -62,8 +63,8 @@ def FindClient():
                 print ("Connected")
                 t1 = threading.Thread(target=recv)
                 t2 = threading.Thread(target=send)
-                t2.start()
                 t1.start()
+                t2.start()
                 t1.join()
                 t2.join()
                 if t1.is_alive():

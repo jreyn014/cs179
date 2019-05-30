@@ -12,9 +12,9 @@ else:
         print("Jesus")
         hostMACAddress = "B8:27:EB:A6:9E:7E"
 
-hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
+#hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
-subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
+#subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 port = 4
 backlog = 10
 size = 1024
@@ -22,14 +22,17 @@ s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = 1
 
-def send():
+def send(client, i):
     try:
         data = str(j)
         print("Data: %s" % data)
         if not data:
            print("Data sucks (send) %s" % data)
            return
-        s.send(data)
+        if i == 1:
+            client.send(data)
+        else:
+            s.send(data)
         print("Sent Data: %s" % data)
     except:
         print("No socket created; Did not send")
@@ -62,7 +65,7 @@ def FindClient():
                 s.connect((addr, port))
                 print ("Connected")
                 t1 = threading.Thread(target=recv)
-                t2 = threading.Thread(target=send)
+                t2 = threading.Thread(target=send(s, 0))
                 t1.start()
                 t2.start()
                 t1.join()
@@ -85,7 +88,7 @@ def WaitForClient():
     #hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
     #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
     #hostMACAddress = ""
-    #subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
+    subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
     #port = 4
     #backlog = 10
     #size = 1024
@@ -99,7 +102,7 @@ def WaitForClient():
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
         t1 = threading.Thread(target=recv)
-        t2 = threading.Thread(target=send)
+        t2 = threading.Thread(target=send(client, 1))
         t1.start()
         t2.start()
         t2.join()

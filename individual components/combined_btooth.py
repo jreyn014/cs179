@@ -3,6 +3,15 @@ import subprocess
 import threading
 
 global s
+name = bluetooth.read_local_bdaddr()
+print("Host: %s" % name[0])
+if name[0] == "B8:27:EB:1A:E0:6F":
+        print("Nicke")
+        hostMACAddress = "B8:27:EB:1A:E0:6F"
+else:
+        print("Jesus")
+        hostMACAddress = "B8:27:EB:A6:9E:7E"
+
 hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
@@ -80,7 +89,7 @@ def WaitForClient():
     #backlog = 10
     #size = 1024
     #s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    #s.bind((hostMACAddress, port))
+    s.bind((hostMACAddress, port))
     print("Listening")
     s.listen(backlog)
     try:
@@ -104,11 +113,15 @@ def WaitForClient():
             #client.close()
             s.close()
 
+test = input("h or not: ")
 #def main():
 #IF HOST RUN FindClient
-#FindClient()
+if test == 'h':
+    WaitForClient()
+else:
+    FindClient()
 #IF CLIENT RUN WaitForClient
-WaitForClient()
+#WaitForClient()
 #main()
 #t1 = threading.Thread(target=recv)
 #t1.start()

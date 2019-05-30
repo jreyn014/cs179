@@ -54,6 +54,7 @@ def main():
     while True:
         screen.Menu()
         screen.HostMenu()
+        screen.GameOver()
         screen.MainGame()
         screen.NextBlock()
         screen.HeldBlock()

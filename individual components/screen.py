@@ -142,7 +142,7 @@ def ColorLUT2(inputChar): #DONT delete me, if confused check google drive :)
     elif inputChar == 'Z':
         return 0x6800
     elif inputChar == 'Q':
-        return 0x3186
+        return 0xFFFF#3186
     elif inputChar == '>':
         return 0x0000
     elif inputChar == '<':
@@ -260,6 +260,27 @@ def HostMenu():
                 DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.A[j][i]))
                 DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.M[j][i]))
                 DrawPixel(i + offsetX + 8 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
+
+def GameOver():
+#    if globals.game_play == False:
+    if globals.output_game_over:
+        globals.output_game_over = False
+        offsetX = 40
+        offsetY = 70
+        LetterSize = 6
+#        FillRect(offsetX - 2 * LetterSize, offsetY - LetterSize, offsetX + 8 * LetterSize, offsetY + (int)(3.5 * LetterSize), ~0xFFFF)
+        FillRect(offsetX - 10, offsetY - 10, offsetX + 4 * LetterSize + 10, offsetY + 2 * LetterSize + 10, 0x0000)
+        for i in range(5):
+            for j in range(5):
+                DrawPixel(i + offsetX, j + offsetY, ColorLUT(screen_characters.G[j][i]))
+                DrawPixel(i + offsetX + LetterSize, j + offsetY, ColorLUT(screen_characters.A[j][i]))
+                DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.M[j][i]))
+                DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY, ColorLUT(screen_characters.E[j][i]))
+
+                DrawPixel(i + offsetX, j + offsetY + 10, ColorLUT(screen_characters.O[j][i]))
+                DrawPixel(i + offsetX + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.V[j][i]))
+                DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
+                DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.R[j][i]))
 
 def MoveMenuArrowUp():
     for i in range(5):

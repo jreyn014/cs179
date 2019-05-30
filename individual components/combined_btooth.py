@@ -38,6 +38,19 @@ def send(client, i):
         print("No socket created; Did not send")
         s.close()
 
+def send():
+    try:
+        data = str(j)
+        print("Data: %s" % data)
+        if not data:
+           print("Data sucks (send) %s" % data)
+           return
+        s.send(data)
+        print("Sent Data: %s" % data)
+    except:
+        print("No socket created; Did not send")
+        s.close()
+
 
 
 def recv(client, i):
@@ -48,6 +61,18 @@ def recv(client, i):
                  data = client.recv(size)
             else:
                  data = s.recv(size)
+            if not data:
+                print("Wrong Data %s" % data)
+            print("received: %s" % data)
+    except:
+        print("No socket created")
+        s.close()
+
+def recv():
+    try:
+        while 1:
+            print("Waiting to receive data")
+            data = s.recv(size)
             if not data:
                 print("Wrong Data %s" % data)
             print("received: %s" % data)
@@ -67,8 +92,8 @@ def FindClient():
                 print ("Found Pi")
                 s.connect((addr, port))
                 print ("Connected")
-                t1 = threading.Thread(target=recv(s, 0))
-                t2 = threading.Thread(target=send(s, 0))
+                t1 = threading.Thread(target=recv)
+                t2 = threading.Thread(target=send)
                 t1.start()
                 t2.start()
                 t1.join()

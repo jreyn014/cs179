@@ -14,14 +14,22 @@ def recv():
 
 def WaitForClient():
 	hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
-    #hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
-    #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
+    	#hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
+    	#hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 	#hostMACAddress = ""
 	subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 	port = 4
 	backlog = 10
 	size = 1024
 	s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+	name = bluetooth.read_local_bdaddr()
+	print("Host: %s" % name[0])
+	if name[0] == "B8:27:EB:1A:E0:6F":
+		print("Nicke")
+		hostMACAddress = "B8:27:EB:1A:E0:6F"
+	else:
+		print("Jesus")
+		hostMACAddress = "B8:27:EB:A6:9E:7E"
 	s.bind((hostMACAddress, port))
 	print("Listening")
 	s.listen(backlog)

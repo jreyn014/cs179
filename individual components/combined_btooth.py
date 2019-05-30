@@ -22,7 +22,7 @@ s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = 1
 
-def send(client, i):
+def send_host(client, i):
     try:
         data = str(j)
         print("Data: %s" % data)
@@ -53,7 +53,7 @@ def send():
 
 
 
-def recv(client, i):
+def recv_host(client, i):
     try:
         while 1:
             print("Waiting to receive data")
@@ -129,12 +129,13 @@ def WaitForClient():
         #while 1:
         print("Connected", clientInfo)
             #threading.Thread(target=recv, daemon=True).start()
-        t1 = threading.Thread(target=recv(client, 1))
-        t2 = threading.Thread(target=send(client, 1))
+        t1 = threading.Thread(target=recv_host, args=[client, 1])
+        t2 = threading.Thread(target=send_host, args=[client, 1])
         t1.start()
         t2.start()
         t1.join()
         t2.join()
+        return
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:

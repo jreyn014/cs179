@@ -1,8 +1,8 @@
 #State Machine for Main Menu selection screen options
 import globals
 import screen
-import client_bluetooth
-import server_bluetooth
+#import client_bluetooth
+#import server_bluetooth
 
 from enum import Enum
 
@@ -43,7 +43,7 @@ def tick():
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
             #print("--> 1P Game")
-            globals.output_menu = True
+            globals.output_game_over = True
             state = States.GAME_OVER
             
         
@@ -104,6 +104,7 @@ def tick():
     
     elif state == States.GAME_OVER:
         if buttons["B"]:
+            globals.output_menu = True
             state = States.GAME_SELECT_1P
         else:
             state = States.GAME_OVER

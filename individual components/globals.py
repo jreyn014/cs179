@@ -12,6 +12,7 @@ buttons = {
 "Right" : False
 }
 
+client = None
 flag = 1
 game_map = None
 game_map_old = None

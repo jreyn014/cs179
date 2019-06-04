@@ -25,7 +25,7 @@ j = ""
 
 def closeSocket():
     global s
-    s.shutdown(RDWR)
+    s.shutdown(SHUT_RDWR)
     s.close()
 
 

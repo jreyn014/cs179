@@ -2,6 +2,7 @@ import bluetooth
 import subprocess
 import threading
 import socket
+import globals
 
 def findHostMAC():
     global hostMACAddress

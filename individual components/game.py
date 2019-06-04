@@ -355,11 +355,12 @@ def tick():
                     globals.atk_in -= 2
                 
                 clear_lines = game_map.checkLines()
-                if clear_lines > 0:
-                    if globals.client:
-                        bt.send_host(globals.client, clear_lines)
-                    else:
-                        bt.send(clear_lines)
+                if globals.isMultiplayer:
+                    if clear_lines > 0:
+                        if globals.client:
+                            bt.send_host(globals.client, clear_lines)
+                        else:
+                            bt.send(clear_lines)
                 
                 active_block = Block(next_block.key)
                 next_block = Block()

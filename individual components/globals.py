@@ -19,6 +19,7 @@ game_map_old = None
 game_play = False
 hold_block = None
 hold_block_old = None
+isMultiplayer = False
 lines = [0,0,0,0]
 lines_old = [0,0,0,0]
 next_block = None

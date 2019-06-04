@@ -52,10 +52,14 @@ def tick():
             
     elif state == States.GAME_SELECT_HOST:
         if buttons["A"]:
-            bt.findHostMAC()
-            globals.client = bt.WaitForClient()
-            globals.game_play = True
-            state = States.GAME_2P
+            if(globals.isMultiplayer == False):
+                bt.findHostMAC()
+                globals.client = bt.WaitForClient()
+                globals.game_play = True
+                globals.isMultiplayer = True
+                state = States.GAME_2P
+            else:
+                States.GAME_SELECT_HOST
         elif buttons["B"]:
             globals.output_menu = True
             state = States.GAME_SELECT_1P
@@ -67,9 +71,13 @@ def tick():
             
     elif state == States.GAME_SELECT_CONNECT:
         if buttons["A"]:
-            bt.FindHost()
-            globals.game_play = True
-            state = States.GAME_2P
+            if(globals.isMultiplayer == False):
+                bt.FindHost()
+                globals.game_play = True
+                globals.isMultiplayer = True
+                state = States.GAME_2P
+            else:
+                state = States.GAME_SELECT_CONNECT
         elif buttons["B"]:
             globals.output_menu = True
             state = States.GAME_SELECT_1P
@@ -96,6 +104,7 @@ def tick():
                 bt.s.close()
             
             globals.client = None
+            globals.isMultiplayer = False
             state = States.GAME_OVER
     
     elif state == States.GAME_OVER:

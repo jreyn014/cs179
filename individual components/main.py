@@ -55,6 +55,7 @@ def main():
         screen.Menu()
         screen.HostMenu()
         screen.GameOver()
+        screen.GameOverMultiplayer()
         screen.MainGame()
         screen.NextBlock()
         screen.HeldBlock()

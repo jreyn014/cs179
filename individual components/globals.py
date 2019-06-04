@@ -23,6 +23,7 @@ lines_old = [0,0,0,0]
 next_block = None
 next_block_old = None
 output_game_over = False
+output_game_over_multiplayer = False
 output_hold_menu = False
 output_menu = True
 speaker_period = 0

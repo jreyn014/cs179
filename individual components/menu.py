@@ -74,10 +74,15 @@ def tick():
     elif state == States.GAME_SELECT_CONNECT:
         if buttons["A"]:
             if(globals.isMultiplayer == False):
-                bt.FindHost()
-                globals.game_play = True
                 globals.isMultiplayer = True
-                state = States.GAME_2P
+                if(bt.FindHost()):
+                    globals.game_play = True
+                    state = States.GAME_2P
+                else:
+                    globals.isMultiplayer - False
+                    globals.output_menu = True
+                    screen.MoveMenuArrowDown()
+                    state = States.GAME_SELECT_2P
             else:
                 state = States.GAME_SELECT_CONNECT
         elif buttons["B"]:

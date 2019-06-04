@@ -23,6 +23,11 @@ s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = ""
 
+def closeSocket():
+    global s
+    s.close()
+
+
 def send_host(client, data):
     global s
     try:

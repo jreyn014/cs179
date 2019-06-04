@@ -5,11 +5,13 @@ import combined_btooth as bt
 
 from enum import Enum
 
+connecting = False
 States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P GAME_OVER')
 state = States.init
 
 def tick():
     global state
+    global connecting
     buttons = globals.buttons
     #Transitions
     if state == States.init:
@@ -52,10 +54,15 @@ def tick():
             
     elif state == States.GAME_SELECT_HOST:
         if globals.isMultiplayer:
-            bt.findHostMAC()
-            globals.client, globals.recv_thread = bt.WaitForClient()
-            globals.game_play = True
-            States.GAME_2P
+            if(connecting == False):
+                connecting = True
+                bt.findHostMAC()
+                globals.client, globals.recv_thread = bt.WaitForClient()
+                globals.game_play = True
+                connecting = False
+                States.GAME_2P
+            else:
+                States.GAME_SELECT_HOST
         elif buttons["A"]:
             globals.isMultiplayer = True
             globals.output_connecting = True
@@ -71,14 +78,19 @@ def tick():
             
     elif state == States.GAME_SELECT_CONNECT:
         if globals.isMultiplayer:
-            found, globals.recv_thread = bt.FindHost()
-            if(found):
-                globals.game_play = True
-                state = States.GAME_2P
+            if(connecting == False):
+                connecting = True
+                found, globals.recv_thread = bt.FindHost()
+                connecting = False
+                if(found):
+                    globals.game_play = True
+                    state = States.GAME_2P
+                else:
+                    globals.isMultiplayer - False
+                    globals.output_menu = True
+                    state = States.GAME_SELECT_1P
             else:
-                globals.isMultiplayer - False
-                globals.output_menu = True
-                state = States.GAME_SELECT_1P
+                state = States.GAME_SELECT_CONNECT
         elif buttons["A"]:
             if(globals.isMultiplayer == False):
                 globals.isMultiplayer = True

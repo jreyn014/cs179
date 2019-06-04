@@ -54,6 +54,7 @@ def main():
     while True:
         screen.Menu()
         screen.HostMenu()
+        screen.Connecting()
         screen.GameOver()
         screen.GameOverMultiplayer()
         screen.MainGame()

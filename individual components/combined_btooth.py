@@ -28,7 +28,7 @@ j = ""
 def closeSocket():
     global s
     if(globals.client):
-        globals.client.shutdown(socket.SHUT_RDRW)
+        globals.client.shutdown(socket.SHUT_RDWR)
         globals.client.close()
     s.shutdown(socket.SHUT_RDWR)
     s.close()

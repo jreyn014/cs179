@@ -29,7 +29,6 @@ def tick():
         if globals.game_play == True:           
             state = States.GAME_1P
         else:
-            #print("Game Over")
             total = globals.lines[0]*1 + globals.lines[1]*3 + globals.lines[2]*5 + globals.lines[3]*8
             print("Score:")
             print("1-lines: "+str(globals.lines[0])+" *1 =\t"+str(globals.lines[0]*1))
@@ -37,7 +36,6 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            #print("--> 1P Game")
             globals.output_game_over = True
             state = States.GAME_OVER
             
@@ -85,7 +83,6 @@ def tick():
         if globals.game_play == True:           
             state = States.GAME_2P
         else:
-            #print("Game Over")
             total = globals.lines[0]*1 + globals.lines[1]*3 + globals.lines[2]*5 + globals.lines[3]*8
             print("Score:")
             print("1-lines: "+str(globals.lines[0])+" *1 =\t"+str(globals.lines[0]*1))
@@ -93,9 +90,10 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            #print("--> 1P Game")
             globals.output_game_over_multiplayer = True
             globals.output_win = True
+            if globals.client:
+                bt.s.close()
             
             globals.client = None
             state = States.GAME_OVER

@@ -3,7 +3,7 @@ from enum import Enum
 import random
 import copy
 import screen
-#import combined_btooth as bt
+import combined_btooth as bt
 
 Blocks = {
     'I' : [

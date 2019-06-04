@@ -60,8 +60,10 @@ def main():
         screen.NextBlock()
         screen.HeldBlock()
         screen.UpdateLines()
-        threading.Thread(target=main_tick,args=[period_main]).start()
+        cur_tick = threading.Thread(target=main_tick,args=[period_main])
+        cur_tick.start()
         time.sleep(period_main/1000)
+        cur_tick.join()
         
     return 0
 main()

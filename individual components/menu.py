@@ -52,11 +52,13 @@ def tick():
             
     elif state == States.GAME_SELECT_HOST:
         if buttons["A"]:
+            print("In Host 1")
             if(globals.isMultiplayer == False):
+                globals.isMultiplayer = True
+                print("In Host 2")
                 bt.findHostMAC()
                 globals.client = bt.WaitForClient()
                 globals.game_play = True
-                globals.isMultiplayer = True
                 state = States.GAME_2P
             else:
                 States.GAME_SELECT_HOST

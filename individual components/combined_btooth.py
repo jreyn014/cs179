@@ -2,10 +2,8 @@ import bluetooth
 import subprocess
 import threading
 
-global s
-global hostMACAddress
-
 def findHostMAC():
+    global hostMACAddress
     name = bluetooth.read_local_bdaddr()
     print("Host: %s" % name[0])
     if name[0] == "B8:27:EB:1A:E0:6F":
@@ -15,7 +13,7 @@ def findHostMAC():
         print("Jesus")
         hostMACAddress = "B8:27:EB:A6:9E:7E"
 
-hostMACAddress = ""
+hostMACAddress = ""#bluetooth.read_local_bdaddr()[0]
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 #subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 port = 4
@@ -26,6 +24,7 @@ s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 j = ""
 
 def send_host(client, data):
+    global s
     try:
         j = str(data)
         print("Data: %s" % data)
@@ -40,6 +39,7 @@ def send_host(client, data):
         s.close()
 
 def send(data):
+    global s
     try:
         j = str(data)
         print("Data: %s" % data)
@@ -55,6 +55,7 @@ def send(data):
 
 
 def recv_host(client):
+    global s
     try:
         while 1:
             print("Waiting to receive data")
@@ -67,6 +68,7 @@ def recv_host(client):
         s.close()
 
 def recv():
+    global s
     try:
         while 1:
             print("Waiting to receive data")
@@ -79,6 +81,7 @@ def recv():
         s.close()
 
 def FindHost():
+    global s
     print ("performing inquiry...")
     nearby_devices = bluetooth.discover_devices(lookup_names = True)
     print ("found %d devices" % len(nearby_devices))
@@ -110,6 +113,8 @@ def FindHost():
             s.close()
 
 def WaitForClient():
+    global s
+    global hostMACAddress
     #hostMACAddress = "B8:27:EB:A6:9E:7E" #Jesus
     #hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
     #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke

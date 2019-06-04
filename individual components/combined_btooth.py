@@ -149,8 +149,8 @@ def WaitForClient():
 #findHostMAC()
 #WaitForClient()
 #else:
-findHostMAC()
-FindHost()
+#findHostMAC()
+#FindHost()
 #IF CLIENT RUN WaitForClient
 #WaitForClient()
 #main()

@@ -287,25 +287,26 @@ def GameOverMultiplayer():
     if globals.output_game_over_multiplayer:
         globals.output_game_over_multiplayer = False
         offsetX = 40
+        offsetX2 = 3
         offsetY = 70
         LetterSize = 6
 #        FillRect(offsetX - 2 * LetterSize, offsetY - LetterSize, offsetX + 8 * LetterSize, offsetY + (int)(3.5 * LetterSize), ~0xFFFF)
         FillRect(offsetX - 10, offsetY - 10, offsetX + 4 * LetterSize + 10, offsetY + 2 * LetterSize + 10, 0x0000)
         for i in range(5):
             for j in range(5):
-                DrawPixel(i + offsetX, j + offsetY, ColorLUT(screen_characters.Y[j][i]))
-                DrawPixel(i + offsetX + LetterSize, j + offsetY, ColorLUT(screen_characters.O[j][i]))
-                DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.U[j][i]))
+                DrawPixel(i + offsetX + offsetX2, j + offsetY, ColorLUT(screen_characters.Y[j][i]))
+                DrawPixel(i + offsetX + offsetX2 + LetterSize, j + offsetY, ColorLUT(screen_characters.O[j][i]))
+                DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.U[j][i]))
                 
-                if(globals.output_win):
-                    DrawPixel(i + offsetX, j + offsetY + 10, ColorLUT(screen_characters.W[j][i]))
-                    DrawPixel(i + offsetX + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.I[j][i]))
-                    DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.N[j][i]))
+                if(globals.output_win == True):
+                    DrawPixel(i + offsetX + offsetX2, j + offsetY + 10, ColorLUT(screen_characters.W[j][i]))
+                    DrawPixel(i + offsetX + offsetX2 + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.I[j][i]))
+                    DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.N[j][i]))
                 else:
                     DrawPixel(i + offsetX, j + offsetY + 10, ColorLUT(screen_characters.L[j][i]))
                     DrawPixel(i + offsetX + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.O[j][i]))
                     DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.S[j][i]))
-                    DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
+                    DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
 
 def MoveMenuArrowUp():
     for i in range(5):

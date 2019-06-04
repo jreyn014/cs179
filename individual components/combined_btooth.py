@@ -67,7 +67,13 @@ def send(data):
         print("No socket created; Did not send")
         s.close()
 
-
+def processData(data):
+    if data == "GAME_OVER":
+       globals.game_play = False
+       globals.output_win = True
+    else:
+       lines = atoi(data)
+       globals.atk_in += lines
 
 def recv_host(client):
     global s
@@ -76,6 +82,7 @@ def recv_host(client):
             client.send("You are connected")
             print("Waiting for data")
             data = client.recv(size)
+            processData(data)
             if not data:
                 print("Wrong Data %s" % data)
             print("received: %s" % data)
@@ -89,6 +96,7 @@ def recv():
         while 1:
             print("Waiting to receive data")
             data = s.recv(size)
+            processData(data)
             if not data:
                 print("Wrong Data %s" % data)
             print("received: %s" % data)

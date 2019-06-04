@@ -105,9 +105,8 @@ def tick():
             print("Total:\t"+str(total))
             globals.output_game_over_multiplayer = True
             globals.output_win = True
-            if globals.client:
-                bt.closeSocket()
-                globals.recv_thread.join()
+            bt.closeSocket()
+            globals.recv_thread.join()
             
             globals.client = None
             globals.recv_thread = None

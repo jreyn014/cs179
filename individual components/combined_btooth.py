@@ -58,7 +58,8 @@ def recv_host(client):
     global s
     try:
         while 1:
-            print("Waiting to receive data")
+            client.send("You are connected")
+            print("Waiting for data")
             data = client.recv(size)
             if not data:
                 print("Wrong Data %s" % data)
@@ -99,8 +100,8 @@ def FindHost():
                 #t2.start()
                 t1.join()
                 #t2.join()
-                if t1.is_alive():
-                   print("t1 running")
+                #if t1.is_alive():
+                  # print("t1 running")
                 return True
                 #t1 = threading.Thread(target=recv)
                 #t1.start()

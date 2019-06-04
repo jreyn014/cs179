@@ -27,6 +27,7 @@ output_game_over = False
 output_game_over_multiplayer = False
 output_hold_menu = False
 output_menu = True
+outut_win = False
 speaker_period = 0
 
 test = 0

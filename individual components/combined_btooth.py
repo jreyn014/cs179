@@ -1,6 +1,7 @@
 import bluetooth
 import subprocess
 import threading
+import socket
 
 def findHostMAC():
     global hostMACAddress
@@ -25,7 +26,7 @@ j = ""
 
 def closeSocket():
     global s
-    s.shutdown(SHUT_RDWR)
+    s.shutdown(socket.SHUT_RDWR)
     s.close()
 
 
@@ -137,6 +138,7 @@ def WaitForClient():
     s.bind((hostMACAddress, port))
     print("Listening")
     s.listen(backlog)
+    #closeSocket()
     try:
         client, clientInfo = s.accept()
         #while 1:

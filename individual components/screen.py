@@ -271,22 +271,20 @@ def Connecting():
         FillRect(offsetX - 2 * LetterSize, offsetY, 127, 159, 0x0000)
         for i in range(5):
             for j in range(5):
-                DrawPixel(i + offsetX - 10, j + offsetY, ColorLUT(screen_characters.arrow[j][i]))
-
                 DrawPixel(i + offsetX, j + offsetY, ColorLUT(screen_characters.C[j][i]))
                 DrawPixel(i + offsetX + LetterSize, j + offsetY, ColorLUT(screen_characters.O[j][i]))
                 DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
                 DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
-                DrawPixel(i + offsetX + 5 * LetterSize, j + offsetY, ColorLUT(screen_characters.E[j][i]))
-                DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY, ColorLUT(screen_characters.C[j][i]))
-                DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY, ColorLUT(screen_characters.T[j][i]))
+                DrawPixel(i + offsetX + 4 * LetterSize, j + offsetY, ColorLUT(screen_characters.E[j][i]))
+                DrawPixel(i + offsetX + 5 * LetterSize, j + offsetY, ColorLUT(screen_characters.C[j][i]))
+                DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY, ColorLUT(screen_characters.T[j][i]))
                 DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY, ColorLUT(screen_characters.I[j][i]))
-                DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
-                DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY, ColorLUT(screen_characters.G[j][i]))
+                DrawPixel(i + offsetX + 8 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
+                DrawPixel(i + offsetX + 9 * LetterSize, j + offsetY, ColorLUT(screen_characters.G[j][i]))
 
-        DrawPixel(7 + offsetX + 7 * LetterSize, 4 + offsetY, 0xFFFF)
-        DrawPixel(10 + offsetX + 7 * LetterSize, 4 + offsetY, 0xFFFF)
-        DrawPixel(13 + offsetX + 7 * LetterSize, 4 + offsetY, 0xFFFF)
+        DrawPixel(7 + offsetX + 10 * LetterSize, 4 + offsetY, 0xFFFF)
+        DrawPixel(10 + offsetX + 10 * LetterSize, 4 + offsetY, 0xFFFF)
+        DrawPixel(13 + offsetX + 10 * LetterSize, 4 + offsetY, 0xFFFF)
 
 def GameOver():
 #    if globals.game_play == False:

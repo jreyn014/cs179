@@ -15,7 +15,7 @@ def findHostMAC():
         print("Jesus")
         hostMACAddress = "B8:27:EB:A6:9E:7E"
 
-hostMACAddress = ""#bluetooth.read_local_bdaddr()[0]
+hostMACAddress = "" #bluetooth.read_local_bdaddr()[0]
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 #subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
 port = 4
@@ -30,8 +30,12 @@ def closeSocket():
     if(globals.client):
         globals.client.shutdown(socket.SHUT_RDWR)
         globals.client.close()
-    s.shutdown(socket.SHUT_RDWR)
-    s.close()
+    try:
+       s.shutdown(socket.SHUT_RDWR)
+       s.close()
+    except:
+       print("Socket already closed")
+       return
 
 
 def send_host(client, data):

@@ -60,9 +60,9 @@ def tick():
                 globals.client, globals.recv_thread = bt.WaitForClient()
                 globals.game_play = True
                 connecting = False
-                States.GAME_2P
+                state = States.GAME_2P
             else:
-                States.GAME_SELECT_HOST
+                state = States.GAME_SELECT_HOST
         elif buttons["A"]:
             globals.isMultiplayer = True
             globals.output_connecting = True

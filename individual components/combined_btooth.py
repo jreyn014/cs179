@@ -76,7 +76,7 @@ def recv_host(client):
                 print("Wrong Data %s" % data)
             print("received: %s" % data)
     except:
-        print("No socket created")
+        print("Socket Closed")
         s.close()
 
 def recv():
@@ -89,7 +89,7 @@ def recv():
                 print("Wrong Data %s" % data)
             print("received: %s" % data)
     except:
-        print("No socket created")
+        print("Socket Closed")
         s.close()
 
 def FindHost():

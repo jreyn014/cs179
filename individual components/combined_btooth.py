@@ -18,10 +18,10 @@ def findHostMAC():
 hostMACAddress = ""
 #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
 #subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
-#port = 4
-#backlog = 10
-#size = 1024
-#s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+port = 4
+backlog = 10
+size = 1024
+s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = ""
 
@@ -114,11 +114,12 @@ def WaitForClient():
     #hostMACAddress = "B8:27:EB:AB:1C:2B" #Josh
     #hostMACAddress = "B8:27:EB:1A:E0:6F" #Nicke
     #hostMACAddress = ""
+    print("Hosting")
     subprocess.call(['sudo', 'hciconfig', 'hci0', 'piscan'])
-    port = 4
-    backlog = 10
-    size = 1024
-    s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    #port = 4
+    #backlog = 10
+    #size = 1024
+    #s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     s.bind((hostMACAddress, port))
     print("Listening")
     s.listen(backlog)

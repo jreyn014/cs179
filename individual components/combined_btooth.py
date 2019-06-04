@@ -3,7 +3,7 @@ import subprocess
 import threading
 
 global s
-#global hostMACAddress
+global hostMACAddress
 
 def findHostMAC():
     name = bluetooth.read_local_bdaddr()

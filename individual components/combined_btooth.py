@@ -98,22 +98,22 @@ def FindHost():
                 #t2 = threading.Thread(target=send)
                 t1.start()
                 #t2.start()
-                t1.join()
+                #t1.join()
                 #t2.join()
                 #if t1.is_alive():
                   # print("t1 running")
-                return True
+                return True, t1
                 #t1 = threading.Thread(target=recv)
                 #t1.start()
                 #t1.join()
                 #threading.Thread(target=send, daemon=True).start()
         print("Devices are not ", str(name))
-        return False
+        return False, None
     except:
             print("Error: Closing socket")
             #client.close()
             s.close()
-            return False
+            return False, None
 
 def WaitForClient():
     global s
@@ -140,9 +140,9 @@ def WaitForClient():
         #t2 = threading.Thread(target=send_host, args=[client, 1])
         t1.start()
         #t2.start()
-        t1.join()
+        #t1.join()
         #t2.join()
-        return client
+        return client, t1
                 #client.send("You are connected")
                 #data = client.recv(size)
                 #if not data:

@@ -1,7 +1,7 @@
 #Store globals here
 #Sort alphabetically
 
-atk_in = 2
+atk_in = 0
 
 buttons = {
 "A"     : False,

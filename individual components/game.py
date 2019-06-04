@@ -373,6 +373,11 @@ def tick():
                     globals.game_map.print_Map()
                     globals.next_block = next_block
                     globals.next_block.print_Block()
+                    if globals.isMultiplayer:
+                        if globals.client:
+                            bt.send_host(globals.client, "GAME_OVER")
+                        else:
+                            bt.send("GAME_OVER")
                     return False
             autodown_count = 0
         else:

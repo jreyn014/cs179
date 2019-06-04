@@ -82,10 +82,11 @@ def recv_host(client):
             client.send("You are connected")
             print("Waiting for data")
             data = client.recv(size)
+            print("received: %s" % data)
             processData(data)
             if not data:
                 print("Wrong Data %s" % data)
-            print("received: %s" % data)
+            #print("received: %s" % data)
     except:
         print("Socket Closed")
         s.close()
@@ -96,10 +97,11 @@ def recv():
         while 1:
             print("Waiting to receive data")
             data = s.recv(size)
+            print("received: %s" % data)
             processData(data)
             if not data:
                 print("Wrong Data %s" % data)
-            print("received: %s" % data)
+           # print("received: %s" % data)
     except:
         print("Socket Closed")
         s.close()

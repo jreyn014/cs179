@@ -101,16 +101,18 @@ def FindHost():
                 #t2.join()
                 if t1.is_alive():
                    print("t1 running")
-                return
+                return True
                 #t1 = threading.Thread(target=recv)
                 #t1.start()
                 #t1.join()
                 #threading.Thread(target=send, daemon=True).start()
-        print("Devices are not PLUTO")
+        print("Devices are not ", str(name))
+        return False
     except:
             print("Error: Closing socket")
             #client.close()
             s.close()
+            return False
 
 def WaitForClient():
     global s

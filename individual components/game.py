@@ -376,6 +376,7 @@ def tick():
                     if globals.isMultiplayer:
                         if globals.client:
                             bt.send_host(globals.client, "GAME_OVER")
+                            bt.closeSocket()
                         else:
                             bt.send("GAME_OVER")
                     return False

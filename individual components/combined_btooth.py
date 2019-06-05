@@ -32,6 +32,7 @@ def closeSocket():
           globals.client.shutdown(socket.SHUT_RDWR)
           globals.client.close()
        s.shutdown(socket.SHUT_RDWR)
+       print("closeSocket() closed")
        s.close()
     except:
        print("Socket already closed")

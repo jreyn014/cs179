@@ -116,8 +116,6 @@ def tick():
             print("3-lines: "+str(globals.lines[2])+" *5 =\t"+str(globals.lines[2]*5))
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
-            globals.client = None
-            globals.recv_thread = None
             globals.isMultiplayer = False
             state = States.GAME_OVER
     

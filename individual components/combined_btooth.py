@@ -79,7 +79,9 @@ def processData(data):
        globals.output_game_over_multiplayer = True
        if globals.client:
           closeSocket()
+          globals.client = None
        globals.recv_thread.join()
+       globals.recv_thread = None
     elif data == "You are connected":
        pass
     elif data.isdigit():

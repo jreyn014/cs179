@@ -339,7 +339,7 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines)/3)):    #Move Down
+        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines))):    #Move Down
             button_latch["Down"] = True if buttons["Down"] else False
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
@@ -386,7 +386,7 @@ def tick():
         
         #Check lines
         if clear_lines > 0:
-            if clear_count >= (10 - (sum(lines)/3)):
+            if clear_count >= (10 - (sum(lines))):
                 for row in range(19,40):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)

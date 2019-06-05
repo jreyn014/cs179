@@ -268,6 +268,7 @@ def tick():
             speed = 1
             clear_lines = False
             clear_count = 0
+            globals.output_win = False
             state = States.GAME_ON
         else:
             state == States.GAME_OFF

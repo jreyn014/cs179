@@ -21,7 +21,7 @@ hostMACAddress = "" #bluetooth.read_local_bdaddr()[0]
 port = 4
 backlog = 10
 size = 1024
-s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+#s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = ""
 
@@ -165,7 +165,7 @@ def WaitForClient():
     #port = 4
     #backlog = 10
     #size = 1024
-    #s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     try:
        s.bind((hostMACAddress, port))
     except:

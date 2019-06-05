@@ -77,7 +77,6 @@ def processData(data):
        globals.output_win = True
        if globals.client:
           closeSocket()
-       
     elif data == "You are connected":
        pass
     elif data.isdigit():
@@ -121,6 +120,7 @@ def recv():
 
 def FindHost():
     global s
+    s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     print ("performing inquiry...")
     nearby_devices = bluetooth.discover_devices(lookup_names = True)
     print ("found %d devices" % len(nearby_devices))

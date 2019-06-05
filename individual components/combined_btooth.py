@@ -21,6 +21,7 @@ hostMACAddress = "" #bluetooth.read_local_bdaddr()[0]
 port = 4
 backlog = 10
 size = 1024
+s = None
 #s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 #s.bind((hostMACAddress, port))
 j = ""
@@ -77,6 +78,7 @@ def processData(data):
        globals.output_win = True
        if globals.client:
           closeSocket()
+       globals.recv_thread.join()
     elif data == "You are connected":
        pass
     elif data.isdigit():
@@ -99,7 +101,6 @@ def recv_host(client):
     except:
         print("Socket Closed")
         s.close()
-        globals.recv_thread.join()
 
 def recv():
     global s
@@ -116,7 +117,6 @@ def recv():
     except:
         print("Socket Closed")
         s.close()
-        globals.recv_thread.join()
 
 def FindHost():
     global s

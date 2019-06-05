@@ -70,6 +70,7 @@ def send(data):
 
 def processData(data):
     data = data.decode()
+    print("Decoded: ", data)
     if data == "GAME_OVER":
        globals.game_play = False
        globals.output_win = True

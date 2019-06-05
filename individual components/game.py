@@ -373,8 +373,8 @@ def tick():
                     globals.game_map.print_Map()
                     globals.next_block = next_block
                     globals.next_block.print_Block()
-                    globals.output_game_over_multiplayer = True
                     if globals.isMultiplayer:
+                        globals.output_game_over_multiplayer = True
                         if globals.client:
                             bt.send_host(globals.client, "GAME_OVER")
                             bt.closeSocket()

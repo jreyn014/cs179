@@ -28,15 +28,14 @@ j = ""
 def closeSocket():
     global s
     try:
-       if(globals.client):
-          globals.client.shutdown(socket.SHUT_RDWR)
-          globals.client.close()
-       s.shutdown(socket.SHUT_RDWR)
-       print("closeSocket() closed")
-       s.close()
+        globals.client.shutdown(socket.SHUT_RDWR)
+        globals.client.close()
+        s.shutdown(socket.SHUT_RDWR)
+        print("closeSocket() closed")
+        s.close()
     except:
-       print("Socket already closed")
-       return
+        print("Socket already closed")
+        return
 
 
 def send_host(client, data):
@@ -78,6 +77,7 @@ def processData(data):
        globals.output_win = True
        if globals.client:
           closeSocket()
+       
     elif data == "You are connected":
        pass
     elif data.isdigit():
@@ -100,6 +100,7 @@ def recv_host(client):
     except:
         print("Socket Closed")
         s.close()
+        globals.recv_thread.join()
 
 def recv():
     global s
@@ -116,6 +117,7 @@ def recv():
     except:
         print("Socket Closed")
         s.close()
+        globals.recv_thread.join()
 
 def FindHost():
     global s

@@ -62,7 +62,7 @@ def send(data):
         print("Data: %s" % data)
         if not data:
            print("Data sucks (send) %s" % data)
-           closeSocket()
+           #closeSocket()
            return
         s.send(data)
         print("Sent Data: %s" % data)
@@ -76,6 +76,8 @@ def processData(data):
     if data == "GAME_OVER":
        globals.game_play = False
        globals.output_win = True
+       if globals.client:
+          closeSocket()
     elif data == "You are connected":
        pass
     elif data.isdigit():
@@ -90,14 +92,10 @@ def recv_host(client):
             print("Waiting for data")
             data = client.recv(size)
             print("received: %s" % data)
-            if data.decode() == "GAME_OVER":
-               closeSocket()
-               break
+            processData(data)
             if not data:
                 print("Wrong Data %s" % data)
-                closeSocket()
                 break
-            processData(data)
             #print("received: %s" % data)
     except:
         print("Socket Closed")
@@ -110,14 +108,10 @@ def recv():
             print("Waiting to receive data")
             data = s.recv(size)
             print("received: %s" % data)
-            if data.decode() == "GAME_OVER":
-                closeSocket()
-                break
+            processData(data)
             if not data:
                 print("Wrong Data %s" % data)
-                closeSocket()
                 break
-            processData(data)
            # print("received: %s" % data)
     except:
         print("Socket Closed")

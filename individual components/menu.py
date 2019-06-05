@@ -5,11 +5,13 @@ import combined_btooth as bt
 
 from enum import Enum
 
+connecting = False
 States = Enum('States', 'init GAME_SELECT_1P GAME_SELECT_2P GAME_1P GAME_SELECT_HOST GAME_SELECT_CONNECT GAME_2P GAME_OVER')
 state = States.init
 
 def tick():
     global state
+    global connecting
     buttons = globals.buttons
     #Transitions
     if state == States.init:
@@ -51,11 +53,20 @@ def tick():
             state = States.GAME_SELECT_2P
             
     elif state == States.GAME_SELECT_HOST:
-        if buttons["A"]:
-            bt.findHostMAC()
-            globals.client = bt.WaitForClient()
-            globals.game_play = True
-            state = States.GAME_2P
+        if globals.isMultiplayer:
+            if(connecting == False):
+                connecting = True
+                bt.findHostMAC()
+                globals.client, globals.recv_thread = bt.WaitForClient()
+                globals.game_play = True
+                connecting = False
+                state = States.GAME_2P
+            else:
+                state = States.GAME_SELECT_HOST
+        elif buttons["A"]:
+            globals.isMultiplayer = True
+            globals.output_connecting = True
+            state = States.GAME_SELECT_HOST
         elif buttons["B"]:
             globals.output_menu = True
             state = States.GAME_SELECT_1P
@@ -66,10 +77,25 @@ def tick():
             state = States.GAME_SELECT_HOST
             
     elif state == States.GAME_SELECT_CONNECT:
-        if buttons["A"]:
-            bt.FindHost()
-            globals.game_play = True
-            state = States.GAME_2P
+        if globals.isMultiplayer:
+            if(connecting == False):
+                connecting = True
+                found, globals.recv_thread = bt.FindHost()
+                connecting = False
+                if(found):
+                    globals.game_play = True
+                    state = States.GAME_2P
+                else:
+                    globals.isMultiplayer - False
+                    globals.output_menu = True
+                    state = States.GAME_SELECT_1P
+            else:
+                state = States.GAME_SELECT_CONNECT
+        elif buttons["A"]:
+            if(globals.isMultiplayer == False):
+                globals.isMultiplayer = True
+                globals.output_connecting = True
+                state = States.GAME_SELECT_CONNECT
         elif buttons["B"]:
             globals.output_menu = True
             state = States.GAME_SELECT_1P
@@ -91,11 +117,9 @@ def tick():
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
             globals.output_game_over_multiplayer = True
-            globals.output_win = True
-            if globals.client:
-                bt.s.close()
-            
             globals.client = None
+            globals.recv_thread = None
+            globals.isMultiplayer = False
             state = States.GAME_OVER
     
     elif state == States.GAME_OVER:

@@ -261,6 +261,31 @@ def HostMenu():
                 DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.M[j][i]))
                 DrawPixel(i + offsetX + 8 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.E[j][i]))
 
+def Connecting():
+#    if globals.game_play == False:
+    if globals.output_connecting:
+        globals.output_connecting = False
+        offsetX = 30
+        offsetY = 70
+        LetterSize = 6
+        FillRect(offsetX - 2 * LetterSize, offsetY, 127, 159, 0x0000)
+        for i in range(5):
+            for j in range(5):
+                DrawPixel(i + offsetX, j + offsetY, ColorLUT(screen_characters.C[j][i]))
+                DrawPixel(i + offsetX + LetterSize, j + offsetY, ColorLUT(screen_characters.O[j][i]))
+                DrawPixel(i + offsetX + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
+                DrawPixel(i + offsetX + 3 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
+                DrawPixel(i + offsetX + 4 * LetterSize, j + offsetY, ColorLUT(screen_characters.E[j][i]))
+                DrawPixel(i + offsetX + 5 * LetterSize, j + offsetY, ColorLUT(screen_characters.C[j][i]))
+                DrawPixel(i + offsetX + 6 * LetterSize, j + offsetY, ColorLUT(screen_characters.T[j][i]))
+                DrawPixel(i + offsetX + 7 * LetterSize, j + offsetY, ColorLUT(screen_characters.I[j][i]))
+                DrawPixel(i + offsetX + 8 * LetterSize, j + offsetY, ColorLUT(screen_characters.N[j][i]))
+                DrawPixel(i + offsetX + 9 * LetterSize, j + offsetY, ColorLUT(screen_characters.G[j][i]))
+
+        DrawPixel(7 + offsetX + 9 * LetterSize, 4 + offsetY, 0xFFFF)
+        DrawPixel(10 + offsetX + 9 * LetterSize, 4 + offsetY, 0xFFFF)
+        DrawPixel(13 + offsetX + 9 * LetterSize, 4 + offsetY, 0xFFFF)
+
 def GameOver():
 #    if globals.game_play == False:
     if globals.output_game_over:
@@ -299,6 +324,7 @@ def GameOverMultiplayer():
                 DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.U[j][i]))
                 
                 if(globals.output_win == True):
+                    globals.output_win = False
                     DrawPixel(i + offsetX + offsetX2, j + offsetY + 10, ColorLUT(screen_characters.W[j][i]))
                     DrawPixel(i + offsetX + offsetX2 + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.I[j][i]))
                     DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.N[j][i]))

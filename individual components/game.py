@@ -339,7 +339,7 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines)/5)):    #Move Down
+        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines)/3)):    #Move Down
             button_latch["Down"] = True if buttons["Down"] else False
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
@@ -355,11 +355,12 @@ def tick():
                     globals.atk_in -= 2
                 
                 clear_lines = game_map.checkLines()
-                if clear_lines > 0:
-                    if globals.client:
-                        bt.send_host(globals.client, clear_lines)
-                    else:
-                        bt.send(clear_lines)
+                if globals.isMultiplayer:
+                    if clear_lines > 0:
+                        if globals.client:
+                            bt.send_host(globals.client, clear_lines)
+                        else:
+                            bt.send(clear_lines)
                 
                 active_block = Block(next_block.key)
                 next_block = Block()
@@ -372,6 +373,12 @@ def tick():
                     globals.game_map.print_Map()
                     globals.next_block = next_block
                     globals.next_block.print_Block()
+                    if globals.isMultiplayer:
+                        if globals.client:
+                            bt.send_host(globals.client, "GAME_OVER")
+                            bt.closeSocket()
+                        else:
+                            bt.send("GAME_OVER")
                     return False
             autodown_count = 0
         else:
@@ -379,7 +386,7 @@ def tick():
         
         #Check lines
         if clear_lines > 0:
-            if clear_count >= (10 - (sum(lines)/5)):
+            if clear_count >= (10 - (sum(lines)/3)):
                 for row in range(19,40):
                     if game_map.map[row][1] == '=':
                         game_map.map.pop(row)

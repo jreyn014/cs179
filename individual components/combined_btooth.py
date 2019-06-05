@@ -203,7 +203,7 @@ def WaitForClient():
 #test = input("h or not: ")
 #if test == 'h':
 #findHostMAC()
-WaitForClient()
+#WaitForClient()
 #else:
 #findHostMAC()
 #FindHost()

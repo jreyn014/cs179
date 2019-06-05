@@ -49,7 +49,7 @@ def send_host(client, data):
            closeSocket()
            return
         #if i == 1:
-        client.send(data)
+        client.send(j)
         print("Sent Data: %s" % data)
     except:
         print("No socket created; Did not send")
@@ -64,7 +64,7 @@ def send(data):
            print("Data sucks (send) %s" % data)
            #closeSocket()
            return
-        s.send(data)
+        s.send(j)
         print("Sent Data: %s" % data)
     except:
         print("No socket created; Did not send")

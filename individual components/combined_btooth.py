@@ -27,10 +27,10 @@ j = ""
 
 def closeSocket():
     global s
-    if(globals.client):
-        globals.client.shutdown(socket.SHUT_RDWR)
-        globals.client.close()
     try:
+       if(globals.client):
+          globals.client.shutdown(socket.SHUT_RDWR)
+          globals.client.close()
        s.shutdown(socket.SHUT_RDWR)
        s.close()
     except:
@@ -71,6 +71,8 @@ def processData(data):
     if data == "GAME_OVER":
        globals.game_play = False
        globals.output_win = True
+    elif data == "You are connected":
+       pass
     else:
        lines = atoi(data)
        globals.atk_in += lines

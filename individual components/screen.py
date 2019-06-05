@@ -324,6 +324,7 @@ def GameOverMultiplayer():
                 DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY, ColorLUT(screen_characters.U[j][i]))
                 
                 if(globals.output_win == True):
+                    globals.output_win = False
                     DrawPixel(i + offsetX + offsetX2, j + offsetY + 10, ColorLUT(screen_characters.W[j][i]))
                     DrawPixel(i + offsetX + offsetX2 + LetterSize, j + offsetY + 10, ColorLUT(screen_characters.I[j][i]))
                     DrawPixel(i + offsetX + offsetX2 + 2 * LetterSize, j + offsetY + 10, ColorLUT(screen_characters.N[j][i]))

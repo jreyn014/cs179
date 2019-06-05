@@ -117,7 +117,6 @@ def tick():
             print("4-lines: "+str(globals.lines[3])+" *8 =\t"+str(globals.lines[3]*8))
             print("Total:\t"+str(total))
             globals.output_game_over_multiplayer = True
-            globals.output_win = True
             bt.closeSocket()
             globals.recv_thread.join()
             

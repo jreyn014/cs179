@@ -76,6 +76,7 @@ def processData(data):
     if data == "GAME_OVER":
        globals.game_play = False
        globals.output_win = True
+       print("output win from btooth:",globals.output_win)
        globals.output_game_over_multiplayer = True
        if globals.client:
           closeSocket()

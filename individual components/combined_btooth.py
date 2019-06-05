@@ -46,6 +46,7 @@ def send_host(client, data):
         print("Data: %s" % data)
         if not data:
            print("Data sucks (send) %s" % data)
+           closeSocket()
            return
         #if i == 1:
         client.send(data)
@@ -61,6 +62,7 @@ def send(data):
         print("Data: %s" % data)
         if not data:
            print("Data sucks (send) %s" % data)
+           closeSocket()
            return
         s.send(data)
         print("Sent Data: %s" % data)
@@ -90,8 +92,8 @@ def recv_host(client):
             print("received: %s" % data)
             if not data:
                 print("Wrong Data %s" % data)
-                s.close()
-                return
+                closeSocket()
+                break
             processData(data)
             #print("received: %s" % data)
     except:
@@ -107,8 +109,8 @@ def recv():
             print("received: %s" % data)
             if not data:
                 print("Wrong Data %s" % data)
-                s.close()
-                return
+                closeSocket()
+                break
             processData(data)
            # print("received: %s" % data)
     except:

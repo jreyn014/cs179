@@ -85,11 +85,14 @@ def processData(data):
 def recv_host(client):
     global s
     try:
+        client.send("You are connected")
         while 1:
-            client.send("You are connected")
             print("Waiting for data")
             data = client.recv(size)
             print("received: %s" % data)
+            if data.decode() == "GAME_OVER":
+               closeSocket()
+               break
             if not data:
                 print("Wrong Data %s" % data)
                 closeSocket()
@@ -107,6 +110,9 @@ def recv():
             print("Waiting to receive data")
             data = s.recv(size)
             print("received: %s" % data)
+            if data.decode() == "GAME_OVER":
+                closeSocket()
+                break
             if not data:
                 print("Wrong Data %s" % data)
                 closeSocket()
@@ -197,7 +203,7 @@ def WaitForClient():
 #test = input("h or not: ")
 #if test == 'h':
 #findHostMAC()
-#WaitForClient()
+WaitForClient()
 #else:
 #findHostMAC()
 #FindHost()

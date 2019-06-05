@@ -75,6 +75,7 @@ def processData(data):
     print("Decoded: ", data)
     if data == "GAME_OVER":
        globals.game_play = False
+       globals.output_game_over_multiplayer = True
        globals.output_win = True
        if globals.client:
           closeSocket()

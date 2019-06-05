@@ -164,7 +164,11 @@ def WaitForClient():
     #backlog = 10
     #size = 1024
     #s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    s.bind((hostMACAddress, port))
+    try:
+       s.bind((hostMACAddress, port))
+    except:
+       print("Bind is in use")
+       pass
     print("Listening")
     s.listen(backlog)
     #closeSocket()
@@ -186,9 +190,9 @@ def WaitForClient():
                 #        print ("Wrong Data %s" % data)
                # print ("received: %s" % data)
     except:
-            print("Closing socket")
+          print("Closing socket")
             #client.close()
-            s.close()
+          s.close()
 
 #test = input("h or not: ")
 #if test == 'h':

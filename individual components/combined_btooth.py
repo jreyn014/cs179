@@ -76,8 +76,8 @@ def processData(data):
        globals.output_win = True
     elif data == "You are connected":
        pass
-    else:
-       lines = atoi(data)
+    elif data.isdigit():
+       lines = int(data)
        globals.atk_in += lines
 
 def recv_host(client):

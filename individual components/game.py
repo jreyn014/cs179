@@ -340,7 +340,7 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"] and (button_latch["Down"] == 0 or button_latch["Down"] >= 20) or autodown_count >= (20 - (sum(lines))):    #Move Down
+        if ( buttons["Down"] and (button_latch["Down"] == 0 or button_latch["Down"] >= 20)) or autodown_count >= (20 - (sum(lines))):    #Move Down
             if button_latch["Down"] < 20:
                 button_latch["Down"] += 1
             test_block = active_block.move_Down()

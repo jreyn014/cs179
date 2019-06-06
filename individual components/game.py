@@ -313,7 +313,7 @@ def tick():
         
         elif buttons["A"] and not button_latch["A"]:           #Rotate Anticlockwise
             button_latch["A"] = True
-            test_block = active_block.rotate_ACW()
+            test_block = active_block.rotate_CW()
             if isCollision(game_map,test_block):
                 test_block = test_block.move_Left()
                 if isCollision(game_map,test_block):
@@ -321,7 +321,7 @@ def tick():
             
         elif buttons["B"] and not button_latch["B"]:           #Rotate Clockwise
             button_latch["B"] = True
-            test_block = active_block.rotate_CW()
+            test_block = active_block.rotate_ACW()
             if isCollision(game_map,test_block):
                 test_block = test_block.move_Left()
                 if isCollision(game_map,test_block):

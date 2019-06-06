@@ -5,8 +5,8 @@ from enum import Enum
 
 #Replace with GPIO pins
 #change get key
-A = 33
-B = 35
+A = 35
+B = 33
 up = 36
 down = 37
 left = 38

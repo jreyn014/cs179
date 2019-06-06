@@ -340,8 +340,8 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"] and (button_latch["Down"] == 0 or button_latch["Down"] >= 20)) or autodown_count >= (20 - (sum(lines))):    #Move Down
-            if button_latch["Down"] < 20:
+        if ( buttons["Down"] and (button_latch["Down"] == 0 or button_latch["Down"] >= 10)) or autodown_count >= (20 - (sum(lines))):    #Move Down
+            if button_latch["Down"] < 10:
                 button_latch["Down"] += 1
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
@@ -367,6 +367,8 @@ def tick():
                 active_block = Block(next_block.key)
                 next_block = Block()
                 hold_latch = False
+                if button_latch["Down"] >= 10:
+                    button_latch["Down"] = 5
                 if isCollision(game_map,active_block):
                     globals.game_play = False   #GAME OVER
                     globals.hold_block = hold_block
@@ -385,7 +387,7 @@ def tick():
                     return False
             autodown_count = 0
         else:
-            if buttons["Down"] and button_latch["Down"] < 20:
+            if buttons["Down"] and button_latch["Down"] < 10:
                 button_latch["Down"] += 1
             else:
                 button_latch["Down"] = 0

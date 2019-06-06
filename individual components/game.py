@@ -226,7 +226,7 @@ button_latch = {
 "A"     : True, 
 "B"     : False, 
 "Up"    : False, 
-"Down"  : False, 
+"Down"  : 0, 
 "Left"  : False, 
 "Right" : False
 }
@@ -264,6 +264,7 @@ def tick():
             lines = [0,0,0,0]
             for button in button_latch:
                 button_latch[button] = False
+            button_latch["Down"] = 0
             autodown_count = 0
             speed = 1
             clear_lines = False
@@ -339,8 +340,9 @@ def tick():
             active_block = test_block
         
         #Check downward movement
-        if ( buttons["Down"] and not button_latch["Down"] ) or autodown_count >= (20 - (sum(lines))):    #Move Down
-            button_latch["Down"] = True if buttons["Down"] else False
+        if ( buttons["Down"] and (button_latch["Down"] == 0 or button_latch["Down"] >= 20) or autodown_count >= (20 - (sum(lines))):    #Move Down
+            if button_latch["Down"] < 20:
+                button_latch["Down"] += 1
             test_block = active_block.move_Down()
             if not isCollision(game_map,test_block):
                 active_block = test_block
@@ -383,6 +385,10 @@ def tick():
                     return False
             autodown_count = 0
         else:
+            if buttons["Down"] and button_latch["Down"] < 20:
+                button_latch["Down"] += 1
+            else:
+                button_latch["Down"] = 0
             autodown_count += 1
         
         #Check lines
